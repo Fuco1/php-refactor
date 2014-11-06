@@ -1,6 +1,10 @@
 <?php
 
-require __DIR__ . '/../lib/bootstrap.php';
+require __DIR__ . '/config.php';
+require PHP_PARSER_ROOT . '/lib/bootstrap.php';
+
+require "FilePosLexer.php";
+require "ElispNodeDumper.php";
 
 ini_set('xdebug.max_nesting_level', 2000);
 
