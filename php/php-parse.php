@@ -42,7 +42,6 @@ foreach ($files as $file) {
         }
 
         $code = file_get_contents($file);
-        echo "====> File $file:\n";
     }
 
     try {
@@ -53,7 +52,6 @@ foreach ($files as $file) {
 
     foreach ($operations as $operation) {
         if ('dump' === $operation) {
-            echo "==> Node dump:\n";
             echo $dumper->dump($stmts), "\n";
         } elseif ('pretty-print' === $operation) {
             echo "==> Pretty print:\n";
