@@ -14,8 +14,8 @@ class ElispNodeDumper
     public function dump($node) {
         if ($node instanceof Node) {
             $r = '(' . $node->getType()
-                . "\n    (:beg . " . $node->getAttribute('begFilePos') . ')'
-                . "\n    (:end . " . $node->getAttribute('endFilePos') . ') ';
+                . " (:beg . " . $node->getAttribute('begFilePos') . ')'
+                . " (:end . " . $node->getAttribute('endFilePos') . ') ';
         } elseif (is_array($node)) {
             $r = '(';
         } else {
@@ -23,10 +23,8 @@ class ElispNodeDumper
         }
 
         foreach ($node as $key => $value) {
-            if (is_numeric($key)) {
-                $r .= "\n    ";
-            } else {
-                $r .= "\n    (:" . $key . ' . ';
+            if (!is_numeric($key)) {
+                $r .= "(:" . $key . ' . ';
             }
 
             if (null === $value || false === $value) {
@@ -38,7 +36,7 @@ class ElispNodeDumper
             } elseif (is_scalar($value)) {
                 $r .= $value . $this->close($key);
             } else {
-                $r .= str_replace("\n", "\n" . '    ', $this->dump($value)) . $this->close($key);
+                $r .= $this->dump($value) . $this->close($key);
             }
         }
 
