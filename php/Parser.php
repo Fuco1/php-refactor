@@ -58,7 +58,7 @@ class VariableContext {
     }
 }
 
-class Tokenizer {
+class Parser {
 
     private $data;
     private $position;
@@ -205,5 +205,5 @@ class Tokenizer {
     }
 }
 
-$tok = new Tokenizer('example.php');
-$tok->parse();
+$parser = new Parser('example.php');
+$parser->parse();
