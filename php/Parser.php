@@ -78,6 +78,8 @@ class Tokenizer {
         $expression = null;
         // musi byt stack
         $function = null;
+        // last variable
+        $variable = null;
         $variables = [];
 
         foreach ($tokens as $token) {
@@ -181,6 +183,8 @@ class Tokenizer {
                         // TODO: update to first non-whitespace token
                         $this->position
                     );
+                    // TODO: preverit, zda je tohle logicky spravne
+                    $variable->initialized = true;
                     break;
                 case ';':
                     if (!is_null($expression)) {
