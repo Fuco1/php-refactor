@@ -250,8 +250,6 @@ class Parser {
         }
 
         var_export($variables);
+        return $variables;
     }
 }
-
-$parser = new Parser('example.php');
-$parser->parse();
