@@ -92,11 +92,18 @@ class Parser {
 
         $curlyDepth = 0;
         $parenDepth = 0;
-        // musi byt stack
+        // last expression... separate variable for convenience
+        // TODO: make into a getter method?
         $expression = null;
-        // musi byt stack
+        // stack of expressions
+        $expressions = [];
+        // last function... separate variable for convenience
+        // TODO: make into a getter method?
         $function = null;
-        // last variable
+        // stack of functions
+        $functions = [];
+        // last function... separate variable for convenience
+        // TODO: make into a getter method?
         $variable = null;
         $variables = [];
 
@@ -105,11 +112,11 @@ class Parser {
                 $token = [0, $token, 0];
             }
 
-            if (!is_null($expression)) {
+            foreach ($expressions as $expression) {
                 $expression->text[] = $token[1];
             }
 
-            if (!is_null($function)) {
+            foreach ($functions as $function) {
                 $function->text[] = $token[1];
             }
 
@@ -124,6 +131,7 @@ class Parser {
                         $this->functionId++
                     );
                     $function->text[] = $token[1];
+                    $functions[] = $function;
                     break;
                 case T_VARIABLE:
                     $variable = new VariableContext($token[1], $this->position);
@@ -198,7 +206,11 @@ class Parser {
                         if ($parenDepth === $function->parenDepth &&
                             $curlyDepth === $function->curlyDepth) {
                             echo "Function {$function->id} ({$function->position}-{$this->position}): " . implode('', $function->text), PHP_EOL;
-                            $function = null;
+                            array_pop($functions);
+                            $function = end($functions);
+                            if (!$function) {
+                                $function = null;
+                            }
                         }
                     }
                     break;
@@ -210,6 +222,7 @@ class Parser {
                         $this->position,
                         $this->expressionId++
                     );
+                    $expressions[] = $expression;
                     // TODO: preverit, zda je tohle logicky spravne
                     $variable->initialized = true;
                     break;
@@ -220,7 +233,14 @@ class Parser {
                             $curlyDepth === $expression->curlyDepth) {
                             // sme na konci expression
                             echo "Expression ({$expression->position}-{$this->position}): " . implode('', $expression->text), PHP_EOL;
-                            $expression = null;
+                            // TODO: abstract the following
+                            // expressions dealing with "reseting" the
+                            // top;
+                            array_pop($expressions);
+                            $expression = end($expressions);
+                            if (!$expression) {
+                                $expression = null;
+                            }
                         }
                     }
                     break;
