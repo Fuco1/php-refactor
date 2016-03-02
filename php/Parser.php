@@ -13,6 +13,10 @@ class ExpressionContext {
         $this->position = $position;
         $this->id = $id;
     }
+
+    public function string() {
+        return implode('', $this->text);
+    }
 }
 
 class ArglistContext {
@@ -40,6 +44,10 @@ class FunctionContext {
         $this->curlyDepth = $curlyDepth;
         $this->position = $position;
         $this->id = $id;
+    }
+
+    public function string() {
+        return implode('', $this->text);
     }
 }
 
@@ -203,7 +211,7 @@ class Parser {
                     if (!is_null($function)) {
                         if ($parenDepth === $function->parenDepth &&
                             $curlyDepth === $function->curlyDepth) {
-                            echo "Function {$function->id} ({$function->position}-{$this->position}): " . implode('', $function->text), PHP_EOL;
+                            echo "Function {$function->id} ({$function->position}-{$this->position}): " . $function->string(), PHP_EOL;
                             array_pop($functions);
                             $function = end($functions);
                             if (!$function) {
@@ -233,7 +241,7 @@ class Parser {
                         if ($parenDepth === $expression->parenDepth &&
                             $curlyDepth === $expression->curlyDepth) {
                             // sme na konci expression
-                            echo "Expression ({$expression->position}-{$this->position}): " . implode('', $expression->text), PHP_EOL;
+                            echo "Expression ({$expression->position}-{$this->position}): " . $expression->string(), PHP_EOL;
                             // TODO: abstract the following
                             // expressions dealing with "reseting" the
                             // top;
