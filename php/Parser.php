@@ -171,7 +171,7 @@ class Parser {
                         // TODO: we need to resolve expressions to
                         // current function scope too
                         isset($expression) ? $expression->id :
-                        ($variable->argument ? 0 : -1));
+                        (isset($function->arglist->opened) ? 0 : -1));
                     break;
             }
 
