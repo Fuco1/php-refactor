@@ -43,6 +43,16 @@ class FunctionContext {
     }
 }
 
+class VariableUsage {
+    public $position;
+    public $expression = -1; // -1 = uninitialized
+
+    public function __construct($position, $expression) {
+        $this->position = $position;
+        $this->expression = $expression;
+    }
+}
+
 class VariableContext {
     public $name;
     public $position;
@@ -54,7 +64,8 @@ class VariableContext {
     // 0 = global
     public $function;
     /**
-     * List of positions where the variable is used.
+     * List of usages
+     * @var VariableUsage[]
      */
     public $uses = [];
 
@@ -145,7 +156,14 @@ class Parser {
                         $variable->argument = true;
                     }
 
-                    $variable->uses[] = $this->position;
+                    // FIXME: for function arguments expression id is
+                    // 0 for the entire duration.
+                    $variable->uses[] = new VariableUsage(
+                        $this->position,
+                        // TODO: we need to resolve expressions to
+                        // current function scope too
+                        isset($expression) ? $expression->id :
+                        ($variable->argument ? 0 : -1));
                     break;
             }
 
