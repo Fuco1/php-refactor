@@ -215,6 +215,7 @@ class Parser {
                     }
                     break;
                 case '=':
+                    // TODO: mozno su aj ine typy "vyrazu", toto je proste vyraz ktory sa priraduje.
                     $expression = new ExpressionContext(
                         $parenDepth,
                         $curlyDepth,
@@ -223,6 +224,8 @@ class Parser {
                         $this->expressionId++
                     );
                     $expressions[] = $expression;
+                    // Any variable which is active at this point must
+                    // be being assigned into
                     // TODO: preverit, zda je tohle logicky spravne
                     $variable->initialized = true;
                     break;
