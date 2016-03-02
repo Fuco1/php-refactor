@@ -89,10 +89,26 @@ class Parser {
     private $position;
     private $functionId = 0;
     private $expressionId = 0;
+    private $variables;
+    private $expressions;
+    private $functions;
 
     public function __construct($data) {
         $this->data = $data;
         $this->position = 0;
+    }
+
+    public function getVariables() {
+        return $this->variables;
+    }
+
+    public function getExpressions() {
+        return $this->expressions;
+    }
+
+    // TODO: add "getFunctionByName"
+    public function getFunctions() {
+        return $this->functions;
     }
 
     public function parse() {
@@ -114,6 +130,9 @@ class Parser {
         // TODO: make into a getter method?
         $variable = null;
         $variables = [];
+
+        $this->expressions = [];
+        $this->functions = [];
 
         foreach ($tokens as $token) {
             if (!is_array($token)) {
@@ -140,6 +159,7 @@ class Parser {
                     );
                     $function->text[] = $token[1];
                     $functions[] = $function;
+                    $this->functions[$function->id] = $function;
                     break;
                 case T_VARIABLE:
                     $variable = new VariableContext($token[1], $this->position);
@@ -230,6 +250,7 @@ class Parser {
                         $this->expressionId++
                     );
                     $expressions[] = $expression;
+                    $this->expressions[$expression->id] = $expression;
                     // Any variable which is active at this point must
                     // be being assigned into
                     // TODO: preverit, zda je tohle logicky spravne
@@ -258,6 +279,6 @@ class Parser {
         }
 
         var_export($variables);
-        return $variables;
+        $this->variables = $variables;
     }
 }
