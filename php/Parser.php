@@ -82,8 +82,8 @@ class Parser {
     private $functionId = 0;
     private $expressionId = 0;
 
-    public function __construct($fileName) {
-        $this->data = file_get_contents($fileName);
+    public function __construct($data) {
+        $this->data = $data;
         $this->position = 0;
     }
 
