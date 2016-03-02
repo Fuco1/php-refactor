@@ -252,9 +252,12 @@ class Parser {
                     $expressions[] = $expression;
                     $this->expressions[$expression->id] = $expression;
                     // Any variable which is active at this point must
-                    // be being assigned into
+                    // be being assigned into.  Only set the
+                    // initialized state if this is the first usage.
                     // TODO: preverit, zda je tohle logicky spravne
-                    $variable->initialized = true;
+                    if (count($variable->uses) === 1) {
+                        $variable->initialized = true;
+                    }
                     break;
                 case ';':
                     if (!is_null($expression)) {
