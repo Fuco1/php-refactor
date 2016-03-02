@@ -4,12 +4,14 @@ class ExpressionContext {
     public $parenDepth;
     public $curlyDepth;
     public $position;
+    public $id;
     public $text = [];
 
-    public function __construct($parenDepth, $curlyDepth, $position) {
+    public function __construct($parenDepth, $curlyDepth, $position, $id) {
         $this->parenDepth = $parenDepth;
         $this->curlyDepth = $curlyDepth;
         $this->position = $position;
+        $this->id = $id;
     }
 }
 
@@ -63,6 +65,7 @@ class Parser {
     private $data;
     private $position;
     private $functionId = 0;
+    private $expressionId = 0;
 
     public function __construct($fileName) {
         $this->data = file_get_contents($fileName);
@@ -181,7 +184,8 @@ class Parser {
                         $parenDepth,
                         $curlyDepth,
                         // TODO: update to first non-whitespace token
-                        $this->position
+                        $this->position,
+                        $this->expressionId++
                     );
                     // TODO: preverit, zda je tohle logicky spravne
                     $variable->initialized = true;
