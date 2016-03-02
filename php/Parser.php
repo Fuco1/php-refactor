@@ -47,6 +47,10 @@ class VariableContext {
     public $name;
     public $position;
     public $initialized = false;
+    /**
+     * Indicate whether the variable a function argument.
+     */
+    public $argument = false;
     // 0 = global
     public $function;
     /**
@@ -138,6 +142,7 @@ class Parser {
                     // handle function argument list
                     if (isset($function->arglist->opened)) {
                         $function->arglist->variables[] = $token[1];
+                        $variable->argument = true;
                     }
 
                     $variable->uses[] = $this->position;
