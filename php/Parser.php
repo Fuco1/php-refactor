@@ -164,11 +164,9 @@ class Parser {
                         $variable->argument = true;
                     }
 
-                    // FIXME: for function arguments expression id is
-                    // 0 for the entire duration.
                     $variable->uses[] = new VariableUsage(
                         $this->position,
-                        // TODO: we need to resolve expressions to
+                        // FIXME: we need to resolve expressions to
                         // current function scope too
                         isset($expression) ? $expression->id :
                         (isset($function->arglist->opened) ? 0 : -1));
