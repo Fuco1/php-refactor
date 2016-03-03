@@ -1,4 +1,13 @@
 {
+    "name": "fuco/php-refactor",
+    "description": "PHP Refactoring support for Emacs",
+    "homepage": "https://github.com/Fuco1/php-refactor",
+    "license": ["GPL-3.0"],
+    "authors": [
+        {
+            "name": "Matus Goljer"
+        }
+    ],
     "require": {
         "nette/robot-loader": "2.3.*",
         "nette/caching": "2.4.*"
