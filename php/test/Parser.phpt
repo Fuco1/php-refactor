@@ -73,8 +73,8 @@ function foo($open, $close) {
         $parser = new Parser($this->input1);
         $parser->parse();
         $functions = $parser->getFunctions();
-        Assert::equal('function () { return $bar; }', $functions[0]->string());
-        Assert::equal('function foo() { return 0; }', $functions[1]->string());
+        Assert::equal('function () { return $bar; }', $functions[1]->string());
+        Assert::equal('function foo() { return 0; }', $functions[2]->string());
     }
 
     public function testNestedFunctions() {
@@ -83,8 +83,8 @@ function foo($open, $close) {
         $functions = $parser->getFunctions();
         Assert::equal('function foo() {
     $bar = function () { return; };
-}', $functions[0]->string());
-        Assert::equal('function () { return; }', $functions[1]->string());
+}', $functions[1]->string());
+        Assert::equal('function () { return; }', $functions[2]->string());
     }
 
     /**
@@ -103,15 +103,15 @@ function foo($open, $close) {
     public function functionArgumentsProvider() {
         return array(
             array('<?php function foo($open) { return; }',
-                  array([0, '$open'])
+                  array([1, '$open'])
             ),
             array('<?php function ($open) { return; }',
-                  array([0, '$open'])
+                  array([1, '$open'])
             ),
             array('<?php function foo($open) {
 return function ($bar) { return; };
 }',
-                  array([0, '$open'], [1, '$bar'])
+                  array([1, '$open'], [2, '$bar'])
             ),
         );
     }
@@ -122,13 +122,13 @@ return function ($bar) { return; };
         $vars = $parser->getVariables();
         $expressions = $parser->getExpressions();
         Assert::equal('$open + $baz;', trim($expressions[1]->string()));
-        Assert::true($vars[0]['$open']->initialized);
-        Assert::true($vars[0]['$foo']->initialized);
-        Assert::true($vars[0]['$bar']->initialized);
+        Assert::true($vars[1]['$open']->initialized);
+        Assert::true($vars[1]['$foo']->initialized);
+        Assert::true($vars[1]['$bar']->initialized);
         // only assignment to first usage should initialize
-        Assert::false($vars[0]['$baz']->initialized);
-        Assert::true($vars[1]['$x']->initialized);
-        Assert::false($vars[1]['$y']->initialized);
+        Assert::false($vars[1]['$baz']->initialized);
+        Assert::true($vars[2]['$x']->initialized);
+        Assert::false($vars[2]['$y']->initialized);
     }
 
     public function testVariableUsageInNestedExpressions() {
@@ -143,13 +143,13 @@ function foo() {
         $parser->parse();
         $vars = $parser->getVariables();
         // not a part of expression, is on the LHS
-        Assert::equal(-1, $vars[0]['$bar']->uses[0]->expression);
-        Assert::equal(0, $vars[1]['$x']->uses[0]->expression);
-        Assert::equal(0, $vars[1]['$x']->uses[1]->expression);
-        Assert::equal(2, $vars[1]['$x']->uses[2]->expression);
-        Assert::equal(1, $vars[1]['$y']->uses[0]->expression);
+        Assert::equal(-1, $vars[1]['$bar']->uses[0]->expression);
+        Assert::equal(0, $vars[2]['$x']->uses[0]->expression);
+        Assert::equal(0, $vars[2]['$x']->uses[1]->expression);
+        Assert::equal(2, $vars[2]['$x']->uses[2]->expression);
+        Assert::equal(1, $vars[2]['$y']->uses[0]->expression);
         // is part of the outer expression assigned to $bar
-        Assert::equal(0, $vars[1]['$foo']->uses[0]->expression);
+        Assert::equal(0, $vars[2]['$foo']->uses[0]->expression);
     }
 }
 

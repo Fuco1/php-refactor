@@ -6,7 +6,10 @@ class Parser {
 
     private $data;
     private $position;
-    private $functionId = 0;
+    // 0 is global variable;
+    private $functionId = 1;
+    // TODO: make it so that 0 is the "no" expression, so json export
+    // works properly
     private $expressionId = 0;
     private $variables;
     private $expressions;
