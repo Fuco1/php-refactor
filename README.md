@@ -1,4 +1,4 @@
-# php-refactor
+# php-refactor [![Build Status](https://travis-ci.org/Fuco1/php-refactor.svg?branch=master)](https://travis-ci.org/Fuco1/php-refactor)
 
 Refactoring library for php
 
