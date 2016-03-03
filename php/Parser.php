@@ -1,88 +1,5 @@
 <?php
 
-class ExpressionContext {
-    public $parenDepth;
-    public $curlyDepth;
-    public $position;
-    public $id;
-    public $text = [];
-
-    public function __construct($parenDepth, $curlyDepth, $position, $id) {
-        $this->parenDepth = $parenDepth;
-        $this->curlyDepth = $curlyDepth;
-        $this->position = $position;
-        $this->id = $id;
-    }
-
-    public function string() {
-        return implode('', $this->text);
-    }
-}
-
-class ArglistContext {
-    public $parenDepth;
-    public $position;
-    public $opened = true;
-    public $variables = [];
-
-    public function __construct($parenDepth, $position) {
-        $this->parenDepth = $parenDepth;
-        $this->position = $position;
-    }
-}
-
-class FunctionContext {
-    public $parenDepth;
-    public $curlyDepth;
-    public $position;
-    public $text = [];
-    public $id;
-    public $arglist = null;
-
-    public function __construct($parenDepth, $curlyDepth, $position, $id) {
-        $this->parenDepth = $parenDepth;
-        $this->curlyDepth = $curlyDepth;
-        $this->position = $position;
-        $this->id = $id;
-    }
-
-    public function string() {
-        return implode('', $this->text);
-    }
-}
-
-class VariableUsage {
-    public $position;
-    public $expression = -1; // -1 = uninitialized
-
-    public function __construct($position, $expression) {
-        $this->position = $position;
-        $this->expression = $expression;
-    }
-}
-
-class VariableContext {
-    public $name;
-    public $position;
-    public $initialized = false;
-    /**
-     * Indicate whether the variable a function argument.
-     */
-    public $argument = false;
-    // 0 = global
-    public $function;
-    /**
-     * List of usages
-     * @var VariableUsage[]
-     */
-    public $uses = [];
-
-    public function __construct($name, $position) {
-        $this->name = $name;
-        $this->position = $position;
-    }
-}
-
 class Parser {
 
     private $data;
@@ -150,11 +67,11 @@ class Parser {
             switch ($token[0]) {
                 case T_FUNCTION:
                     $function = new FunctionContext(
+                        $this->position,
                         // TODO: presunut do triedy a vytvorit helper
                         // na vytvaranie kontextu
                         $parenDepth,
                         $curlyDepth,
-                        $this->position,
                         $this->functionId++
                     );
                     $function->text[] = $token[1];
@@ -162,7 +79,7 @@ class Parser {
                     $this->functions[$function->id] = $function;
                     break;
                 case T_VARIABLE:
-                    $variable = new VariableContext($token[1], $this->position);
+                    $variable = new VariableContext($this->position, $token[1]);
 
                     echo "Variable ";
                     if (!is_null($function)) {
@@ -206,7 +123,7 @@ class Parser {
                     if (!is_null($function)) {
                         if (is_null($function->arglist)) {
                             $function->arglist = new ArglistContext(
-                                $parenDepth, $this->position
+                                $this->position, $parenDepth
                             );
                         }
                     }
@@ -243,10 +160,10 @@ class Parser {
                 case '=':
                     // TODO: mozno su aj ine typy "vyrazu", toto je proste vyraz ktory sa priraduje.
                     $expression = new ExpressionContext(
-                        $parenDepth,
-                        $curlyDepth,
                         // TODO: update to first non-whitespace token
                         $this->position,
+                        $parenDepth,
+                        $curlyDepth,
                         $this->expressionId++
                     );
                     $expressions[] = $expression;
