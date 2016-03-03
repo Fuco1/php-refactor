@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+include __DIR__ . '/../bootstrap.php';
+
+$parser = new Parser(file_get_contents($argv[2]));
+$parser->parse();
+
+switch ($argv[1]) {
+    case 'variables':
+        $vars = $parser->getVariables();
+        $data = json_encode($vars, true);
+        echo $data;
+        break;
+    case 'functions':
+        echo $parser->getFunctions();
+        break;
+}
+
+
+// Local Variables:
+// mode: php
+// End:
