@@ -200,7 +200,7 @@ class Parser {
             $this->position += strlen($token[1]);
         }
 
-        var_export($variables);
+        //var_export($variables);
         $this->variables = $variables;
     }
 
