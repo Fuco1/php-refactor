@@ -2,6 +2,8 @@
 
 class Parser {
 
+    private $debug = false;
+
     private $data;
     private $position;
     private $functionId = 0;
@@ -81,17 +83,17 @@ class Parser {
                 case T_VARIABLE:
                     $variable = new VariableContext($this->position, $token[1]);
 
-                    echo "Variable ";
+                    $this->debug("Variable ");
                     if (!is_null($function)) {
-                        echo "(in function {$function->id}) ";
+                        $this->debug("(in function {$function->id}) ");
                         $variable->function = $function->id;
                     } else {
                         $variable->function = 0;
                     }
                     if (!is_null($expression)) {
-                        echo "(in expression {$expression->position}) ";
+                        $this->debug("(in expression {$expression->position}) ");
                     }
-                    echo "{$token[1]}", PHP_EOL;
+                    $this->debug("{$token[1]}" . PHP_EOL);
 
                     if (!isset($variables[$variable->function][$variable->name])) {
                         $variables[$variable->function][$variable->name] = $variable;
@@ -148,7 +150,7 @@ class Parser {
                     if (!is_null($function)) {
                         if ($parenDepth === $function->parenDepth &&
                             $curlyDepth === $function->curlyDepth) {
-                            echo "Function {$function->id} ({$function->position}-{$this->position}): " . $function->string(), PHP_EOL;
+                            $this->debug("Function {$function->id} ({$function->position}-{$this->position}): " . $function->string() . PHP_EOL);
                             array_pop($functions);
                             $function = end($functions);
                             if (!$function) {
@@ -182,7 +184,7 @@ class Parser {
                         if ($parenDepth === $expression->parenDepth &&
                             $curlyDepth === $expression->curlyDepth) {
                             // sme na konci expression
-                            echo "Expression ({$expression->position}-{$this->position}): " . $expression->string(), PHP_EOL;
+                            $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
                             // TODO: abstract the following
                             // expressions dealing with "reseting" the
                             // top;
@@ -200,5 +202,11 @@ class Parser {
 
         var_export($variables);
         $this->variables = $variables;
+    }
+
+    protected function debug($str) {
+        if ($this->debug) {
+            echo $str;
+        }
     }
 }
