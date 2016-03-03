@@ -105,7 +105,8 @@ class Parser {
 
                     // handle function argument list
                     if (isset($function->arglist->opened)) {
-                        $function->arglist->variables[] = $token[1];
+                        $function->arglist->variables[] =
+                            $variables[$function->id][$token[1]];
                         $variable->argument = true;
                     }
 
@@ -135,7 +136,6 @@ class Parser {
                         if (!is_null($function->arglist)) {
                             if ($function->arglist->parenDepth === $parenDepth) {
                                 $function->arglist->opened = null;
-                                echo "Arglist: " . implode(', ', $function->arglist->variables), PHP_EOL;
                             }
                         }
                     }

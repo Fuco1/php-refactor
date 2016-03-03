@@ -4,7 +4,12 @@ class ArglistContext extends Context {
 
     public $parenDepth;
     public $opened = true;
-    // TODO: store the variablecontexts here?
+
+    /**
+     * List of variables in the argument list
+     *
+     * @var VariableContext[]
+     */
     public $variables = [];
 
     public function __construct($position, $parenDepth) {
