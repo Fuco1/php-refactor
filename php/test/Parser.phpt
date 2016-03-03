@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../Parser.php';
+require __DIR__ . '/../../bootstrap.php';
 
 use Tester\Assert;
 use Tester\TestCase;
