@@ -151,6 +151,44 @@ function foo() {
         // is part of the outer expression assigned to $bar
         Assert::equal(0, $vars[2]['$foo']->uses[0]->expression);
     }
+
+    public function testGetFunctionByPoint() {
+        $parser = new Parser($this->input1);
+        $parser->parse();
+        Assert::null($parser->getFunctionByPoint(10));
+        Assert::null($parser->getFunctionByPoint(85));
+        Assert::equal(
+            'function () { return $bar; }',
+            $parser->getFunctionByPoint(91)->string()
+        );
+        Assert::equal(
+            'function foo() { return 0; }',
+            $parser->getFunctionByPoint(138)->string()
+        );
+
+        $parser = new Parser($this->input3);
+        $parser->parse();
+        Assert::equal(
+            'function foo() {
+    $bar = function () { return; };
+}',
+            $parser->getFunctionByPoint(20)->string()
+        );
+        Assert::equal(
+            'function foo() {
+    $bar = function () { return; };
+}',
+            $parser->getFunctionByPoint(59)->string()
+        );
+        Assert::equal(
+            'function () { return; }',
+            $parser->getFunctionByPoint(35)->string()
+        );
+        Assert::equal(
+            'function () { return; }',
+            $parser->getFunctionByPoint(58)->string()
+        );
+    }
 }
 
 $test = new ParserTest();

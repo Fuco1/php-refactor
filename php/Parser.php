@@ -33,6 +33,27 @@ class Parser {
         return $this->functions;
     }
 
+    /**
+     * Return function at point
+     *
+     * @param int $point
+     * @return FunctionContext|null Function context containing $point
+     *         or null if point lies outside any function.
+     */
+    public function getFunctionByPoint($point) {
+        $last = null;
+        foreach ($this->functions as $function) {
+            if ($function->beg() > $point) {
+                return $last;
+            }
+
+            if ($function->beg() <= $point && $point <= $function->end()) {
+                $last = $function;
+            }
+        }
+        return $last;
+    }
+
     public function parse() {
         $tokens = token_get_all($this->data);
 
