@@ -8,4 +8,8 @@ abstract class Context {
     public function __construct($position) {
         $this->position = $position;
     }
+
+    public function beg() {
+        return $this->position;
+    }
 }
