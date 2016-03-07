@@ -14,4 +14,8 @@ class FunctionContext extends Context {
         $this->curlyDepth = $curlyDepth;
         $this->id = $id;
     }
+
+    public function end() {
+        return $this->beg() + strlen($this->string());
+    }
 }
