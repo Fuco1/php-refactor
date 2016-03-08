@@ -28,7 +28,6 @@ class Parser {
         return $this->expressions;
     }
 
-    // TODO: add "getFunctionByName"
     public function getFunctions() {
         return $this->functions;
     }
