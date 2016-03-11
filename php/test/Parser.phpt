@@ -152,18 +152,18 @@ function foo() {
         Assert::equal(0, $vars[2]['$foo']->uses[0]->expression);
     }
 
-    public function testGetFunctionByPoint() {
+    public function testGetFunctionAtPoint() {
         $parser = new Parser($this->input1);
         $parser->parse();
-        Assert::null($parser->getFunctionByPoint(10));
-        Assert::null($parser->getFunctionByPoint(85));
+        Assert::null($parser->getFunctionAtPoint(10));
+        Assert::null($parser->getFunctionAtPoint(85));
         Assert::equal(
             'function () { return $bar; }',
-            $parser->getFunctionByPoint(91)->string()
+            $parser->getFunctionAtPoint(91)->string()
         );
         Assert::equal(
             'function foo() { return 0; }',
-            $parser->getFunctionByPoint(138)->string()
+            $parser->getFunctionAtPoint(138)->string()
         );
 
         $parser = new Parser($this->input3);
@@ -172,21 +172,21 @@ function foo() {
             'function foo() {
     $bar = function () { return; };
 }',
-            $parser->getFunctionByPoint(20)->string()
+            $parser->getFunctionAtPoint(20)->string()
         );
         Assert::equal(
             'function foo() {
     $bar = function () { return; };
 }',
-            $parser->getFunctionByPoint(59)->string()
+            $parser->getFunctionAtPoint(59)->string()
         );
         Assert::equal(
             'function () { return; }',
-            $parser->getFunctionByPoint(35)->string()
+            $parser->getFunctionAtPoint(35)->string()
         );
         Assert::equal(
             'function () { return; }',
-            $parser->getFunctionByPoint(58)->string()
+            $parser->getFunctionAtPoint(58)->string()
         );
     }
 }
