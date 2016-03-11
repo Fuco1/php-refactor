@@ -39,7 +39,7 @@ class Parser {
      * @return FunctionContext|null Function context containing $point
      *         or null if point lies outside any function.
      */
-    public function getFunctionByPoint($point) {
+    public function getFunctionAtPoint($point) {
         $last = null;
         foreach ($this->functions as $function) {
             if ($function->beg() > $point) {
