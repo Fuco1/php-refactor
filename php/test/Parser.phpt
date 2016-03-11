@@ -43,7 +43,7 @@ function foo() {
 function foo($open, $close) {
     $foo = 2;
     $bar = $open + $baz;
-    $baz = function ($x) { return $x.$y; };
+    $baz = function ($x) { return $x.$y.$foo; };
     return $bar;
 }';
 
@@ -188,6 +188,29 @@ function foo() {
             'function () { return; }',
             $parser->getFunctionAtPoint(58)->string()
         );
+    }
+
+    public function testGetVariableAtPoint() {
+        $parser = new Parser($this->input1);
+        $parser->parse();
+        Assert::equal('$foo', $parser->getVariableAtPoint(9)->name);
+        Assert::equal('$bar', $parser->getVariableAtPoint(19)->name);
+        Assert::equal(0, $parser->getVariableAtPoint(19)->function);
+        Assert::equal('$foo', $parser->getVariableAtPoint(27)->name);
+        Assert::null($parser->getVariableAtPoint(28));
+        Assert::equal('$bar', $parser->getVariableAtPoint(108)->name);
+        Assert::equal(1, $parser->getVariableAtPoint(108)->function);
+
+        $parser = new Parser($this->input4);
+        $parser->parse();
+        Assert::equal('$open', $parser->getVariableAtPoint(22)->name);
+        Assert::equal('$foo', $parser->getVariableAtPoint(43)->name);
+        Assert::equal(1, $parser->getVariableAtPoint(43)->function);
+        Assert::equal('$baz', $parser->getVariableAtPoint(72)->name);
+        Assert::equal('$x', $parser->getVariableAtPoint(98)->name);
+        Assert::equal('$foo', $parser->getVariableAtPoint(118)->name);
+        Assert::equal(2, $parser->getVariableAtPoint(118)->function);
+        Assert::equal('$bar', $parser->getVariableAtPoint(138)->name);
     }
 }
 

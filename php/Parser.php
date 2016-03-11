@@ -24,6 +24,26 @@ class Parser {
         return $this->variables;
     }
 
+    public function getVariableAtPoint($point) {
+        $function = $this->getFunctionAtPoint($point);
+        $functionId = 0; // global scope by default
+        if (isset($function)) {
+            $functionId = $function->id;
+        }
+
+        $variables = $this->getVariables()[$functionId];
+        foreach ($variables as $name => $variable) {
+            foreach ($variable->uses as $usage) {
+                if ($usage->position <= $point &&
+                    $point < ($usage->position + strlen($name))) {
+                    return $variable;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public function getExpressions() {
         return $this->expressions;
     }

@@ -12,6 +12,10 @@ switch ($argv[1]) {
         $data = json_encode($vars, true);
         echo $data;
         break;
+    case 'variable':
+        $var = $parser->getVariableAtPoint($argv[3]);
+        $data = json_encode($var, true);
+        echo $data;
     case 'functions':
         echo $parser->getFunctions();
         break;
