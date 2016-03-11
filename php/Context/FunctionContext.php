@@ -18,4 +18,8 @@ class FunctionContext extends Context {
     public function end() {
         return $this->beg() + strlen($this->string());
     }
+
+    public function containsPoint($point) {
+        return $this->beg() <= $point && $point < $this->end();
+    }
 }
