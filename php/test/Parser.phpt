@@ -129,6 +129,7 @@ return function ($bar) { return; };
         Assert::false($vars[1]['$baz']->initialized);
         Assert::true($vars[2]['$x']->initialized);
         Assert::false($vars[2]['$y']->initialized);
+        Assert::false($vars[2]['$foo']->initialized);
     }
 
     public function testVariableUsageInNestedExpressions() {
