@@ -53,6 +53,34 @@
 ;; (php-refactor-get-variable "./php/RunParser.php" 12)
 ;; (php-refactor-get-variable "./php/Parser.php" 712)
 
+(defun php-refactor-select-variable (variable)
+  "Select all occurrences of VARIABLE in current function."
+  (-let* (((&alist 'uses uses 'name name) variable)
+          ;; append to convert [] to ()
+          (uses (append uses nil))
+          (point (point))
+          (len (length name))
+          (current-start nil))
+    (mapc (-lambda ((&alist 'position beg))
+            (if (and (<= beg point)
+                     (< point (+ beg len)))
+                (setq current-start beg)
+              (goto-char (1+ beg))
+              (set-mark (+ beg len))
+              (mc/create-fake-cursor-at-point)))
+          uses)
+    (goto-char (1+ current-start))
+    (push-mark (+ current-start len))
+    (setq deactivate-mark nil)
+    (activate-mark)
+    (mc/maybe-multiple-cursors-mode)))
+
+(defun php-refactor-rename-variable ()
+  "Rename variable at point."
+  (interactive)
+  (let ((variable (php-refactor-get-variable (buffer-file-name) (point))))
+    (php-refactor-select-variable variable)))
+
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
 (provide 'php-refactor-variables)
