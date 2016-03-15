@@ -11,8 +11,7 @@ use Tester\TestCase;
  */
 class ParserTest extends TestCase {
 
-    private $input1 = '
-<?php
+    private $input1 = '<?php
 $foo = 2;
 $bar = $foo + \'bar\';
 $quz = foo(\'foo\');
@@ -22,8 +21,7 @@ $quz = foo(function () { return $bar; });
 function foo() { return 0; }
 ';
 
-    private $input2 = '
-<?php
+    private $input2 = '<?php
 $foo =
 function () {
    $bar = "foo";
@@ -31,15 +29,13 @@ function () {
 };
 ';
 
-    private $input3 = '
-<?php
+    private $input3 = '<?php
 function foo() {
     $bar = function () { return; };
 }
 ';
 
-    private $input4 = '
-<?php
+    private $input4 = '<?php
 function foo($open, $close) {
     $foo = 2;
     $bar = $open + $baz;

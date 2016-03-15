@@ -17,7 +17,7 @@ class Parser {
 
     public function __construct($data) {
         $this->data = $data;
-        $this->position = 0;
+        $this->position = 1;
     }
 
     public function getVariables() {
