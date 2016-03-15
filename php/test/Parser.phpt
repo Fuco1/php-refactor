@@ -144,6 +144,12 @@ $foo = 1;');
         $vars = $parser->getVariables();
         Assert::equal(8, $vars[0]['$foo']->beg());
         Assert::equal(12, $vars[0]['$foo']->end());
+
+        // TODO: abstract these three lines into a helper
+        $parser = new Parser('<?php $foo = "ľščťž"; $bar = 1;');
+        $parser->parse();
+        $vars = $parser->getVariables();
+        Assert::equal(23, $vars[0]['$bar']->beg());
     }
 
     public function testVariableUsageInNestedExpressions() {

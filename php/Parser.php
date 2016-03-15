@@ -36,7 +36,7 @@ class Parser {
         foreach ($variables as $name => $variable) {
             foreach ($variable->uses as $usage) {
                 if ($usage->position <= $point &&
-                    $point < ($usage->position + strlen($name))) {
+                    $point < ($usage->position + mb_strlen($name, "UTF-8"))) {
                     return $variable;
                 }
             }
@@ -129,7 +129,7 @@ class Parser {
                     break;
                 case T_VARIABLE:
                     $variable = new VariableContext($this->position, $token[1]);
-                    $end = $this->position + strlen($token[1]);
+                    $end = $this->position + mb_strlen($token[1], "UTF-8");
                     $this->debug("Variable ({$this->position}-{$end}) ");
                     if (!is_null($function)) {
                         $this->debug("(in function {$function->id}) ");
@@ -244,7 +244,7 @@ class Parser {
                     }
                     break;
             }
-            $this->position += strlen($token[1]);
+            $this->position += mb_strlen($token[1], "UTF-8");
         }
 
         //var_export($variables);

@@ -21,6 +21,6 @@ class VariableContext extends Context {
     }
 
     public function end() {
-        return $this->beg() + strlen($this->name);
+        return $this->beg() + mb_strlen($this->name, "UTF-8");
     }
 }

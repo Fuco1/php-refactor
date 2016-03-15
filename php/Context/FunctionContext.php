@@ -16,7 +16,7 @@ class FunctionContext extends Context {
     }
 
     public function end() {
-        return $this->beg() + strlen($this->string());
+        return $this->beg() + mb_strlen($this->string(), "UTF-8");
     }
 
     public function containsPoint($point) {
