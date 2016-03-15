@@ -8,18 +8,17 @@ $parser->parse();
 
 switch ($argv[1]) {
     case 'variables':
-        $vars = $parser->getVariables();
-        $data = json_encode($vars, true);
-        echo $data;
+        $data = json_encode($parser->getVariables(), true);
         break;
     case 'variable':
-        $var = $parser->getVariableAtPoint($argv[3]);
-        $data = json_encode($var, true);
-        echo $data;
+        $data = json_encode($parser->getVariableAtPoint($argv[3]), true);
+        break;
     case 'functions':
-        echo $parser->getFunctions();
+        $data = json_encode($parser->getFunctions(), true);
         break;
 }
+
+echo $data;
 
 
 // Local Variables:
