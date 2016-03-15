@@ -102,6 +102,9 @@ class Parser {
                 $token = [0, $token, 0];
             }
 
+            // $position = sprintf("% 4d", $this->position);
+            // echo "($position) Token name: " . token_name($token[0]) . " '{$token[1]}'\n";
+
             foreach ($expressions as $expression) {
                 $expression->text[] = $token[1];
             }
