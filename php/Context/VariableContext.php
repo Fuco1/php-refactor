@@ -19,4 +19,8 @@ class VariableContext extends Context {
         parent::__construct($position);
         $this->name = $name;
     }
+
+    public function end() {
+        return $this->beg() + strlen($this->name);
+    }
 }

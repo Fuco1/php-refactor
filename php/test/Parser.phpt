@@ -128,6 +128,24 @@ return function ($bar) { return; };
         Assert::false($vars[2]['$foo']->initialized);
     }
 
+    public function testVariablePositions() {
+        $parser = new Parser($this->input1);
+        $parser->parse();
+        $vars = $parser->getVariables();
+        Assert::equal(7, $vars[0]['$foo']->beg());
+        Assert::equal(11, $vars[0]['$foo']->end());
+        Assert::equal(17, $vars[0]['$bar']->beg());
+        Assert::equal(21, $vars[0]['$bar']->end());
+
+        $parser = new Parser('<?php
+
+$foo = 1;');
+        $parser->parse();
+        $vars = $parser->getVariables();
+        Assert::equal(8, $vars[0]['$foo']->beg());
+        Assert::equal(12, $vars[0]['$foo']->end());
+    }
+
     public function testVariableUsageInNestedExpressions() {
         $parser = new Parser('
 <?php
