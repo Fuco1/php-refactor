@@ -16,7 +16,8 @@ class Parser {
     private $functions;
 
     public function __construct($data) {
-        $this->data = $data;
+        // replace \r\n with \n
+        $this->data = preg_replace("/\r\n/", "\n", $data);
         $this->position = 1;
     }
 
