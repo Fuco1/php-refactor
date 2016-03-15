@@ -50,16 +50,10 @@
     (goto-char (point-min))
     (json-read)))
 
-(php-refactor-get-variable "./php/RunParser.php" 12)
+;; (php-refactor-get-variable "./php/RunParser.php" 12)
+;; (php-refactor-get-variable "./php/Parser.php" 712)
 
-(--tree-map (if (and (consp it)
-                     (eq (car it) 'position))
-                (cons 'position (1+ (cdr it)))
-              it) '((id) (position . 7) (uses . [((expression . -1) (position . 7)) ((expression . -1) (position . 64))]) (function . 0) (argument . :json-false) (initialized . t) (name . "$parser")))
-
-'((id) (position . 7) (uses . [((expression . -1) (position . 7)) ((expression . -1) (position . 64))]) (function . 0) (argument . :json-false) (initialized . t) (name . "$parser"))
-((id) (position . 8) (uses . [((expression . -1) (position . 7)) ((expression . -1) (position . 64))]) (function . 0) (argument . :json-false) (initialized . t) (name . "$parser"))
-
+;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
 (provide 'php-refactor-variables)
 ;;; php-refactor-variables.el ends here
