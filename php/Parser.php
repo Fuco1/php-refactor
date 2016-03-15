@@ -125,8 +125,8 @@ class Parser {
                     break;
                 case T_VARIABLE:
                     $variable = new VariableContext($this->position, $token[1]);
-
-                    $this->debug("Variable ");
+                    $end = $this->position + strlen($token[1]);
+                    $this->debug("Variable ({$this->position}-{$end}) ");
                     if (!is_null($function)) {
                         $this->debug("(in function {$function->id}) ");
                         $variable->function = $function->id;
