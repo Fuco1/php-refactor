@@ -209,8 +209,7 @@ class Parser {
                 case '=':
                     // TODO: mozno su aj ine typy "vyrazu", toto je proste vyraz ktory sa priraduje.
                     $expression = new ExpressionContext(
-                        // TODO: update to first non-whitespace token
-                        $this->position,
+                        $this->position + 1, // +1 for the = character
                         $parenDepth,
                         $curlyDepth,
                         $this->expressionId++
