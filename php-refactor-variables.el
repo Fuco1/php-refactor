@@ -40,8 +40,11 @@
 
 (php-refactor-get-variables "./php/RunParser.php")
 
-(defun php-refactor-get-variable (file point)
+(defun php-refactor-get-variable (&optional file point)
   "Get variable at point."
+  ;; TODO: add mechanism to copy TRAMP files locally and run analysis on those
+  (setq file (or file (buffer-file-name)))
+  (setq point (or point (point)))
   (with-temp-buffer
     (call-process
      "php" nil (current-buffer) nil
@@ -78,8 +81,7 @@
 (defun php-refactor-rename-variable ()
   "Rename variable at point."
   (interactive)
-  (let ((variable (php-refactor-get-variable (buffer-file-name) (point))))
-    (php-refactor-select-variable variable)))
+  (php-refactor-select-variable (php-refactor-get-variable)))
 
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
