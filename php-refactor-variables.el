@@ -41,7 +41,7 @@
     (goto-char (point-min))
     (json-read)))
 
-(php-refactor-get-variables "./php/RunParser.php")
+(php-refactor-get-variables "/home/matus/.emacs.d/projects/php-refactor/php/RunParserTest.php")
 
 (defun php-refactor-get-variable (&optional file point)
   "Get variable at point."
