@@ -9,4 +9,16 @@ class VariableUsage extends Context {
         parent::__construct($position);
         $this->expression = $expression;
     }
+
+    public function export() {
+        $export = parent::export();
+        return array_merge($export, array(
+            'expression' => is_object($this->expression) ?
+            $this->expression->export() :
+            $this->expression,
+            'assignedExpression' => is_object($this->assignedExpression) ?
+            $this->assignedExpression->export() :
+            $this->assignedExpression,
+        ));
+    }
 }

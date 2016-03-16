@@ -22,4 +22,12 @@ class FunctionContext extends Context {
     public function containsPoint($point) {
         return $this->beg() <= $point && $point < $this->end();
     }
+
+    public function export() {
+        $export = parent::export();
+        return array_merge($export, array(
+            'arglist' => $this->arglist->export(),
+            'text' => $this->string()
+        ));
+    }
 }

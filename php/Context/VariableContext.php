@@ -23,4 +23,15 @@ class VariableContext extends Context {
     public function end() {
         return $this->beg() + mb_strlen($this->name, "UTF-8");
     }
+
+    public function export() {
+        $export = parent::export();
+        return array_merge($export, array(
+            'name' => $this->name,
+            'initialized' => $this->initialized,
+            'argument' => $this->argument,
+            'function' => $this->function,
+            'uses' => array_map(function ($u) { return $u->export(); }, $this->uses)
+        ));
+    }
 }

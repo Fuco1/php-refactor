@@ -17,6 +17,7 @@ class ExpressionContext extends Context {
     public function export() {
         $export = parent::export();
         return array_merge($export, array(
+            'end' => $this->beg() + $this->length(),
             'text' => $this->string()
         ));
     }
