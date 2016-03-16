@@ -14,6 +14,15 @@ class ArglistContext extends Context {
 
     public function __construct($position, $parenDepth) {
         parent::__construct($position);
+        $a = function ($position) { return $a; };
+        $a = $this->export($position);
         $this->parenDepth = $parenDepth;
+    }
+
+    public function export() {
+        $export = parent::export();
+        return array_merge($export, array(
+            'variables' => array_map(function ($v) { return $v->export(); }, $this->variables)
+        ));
     }
 }

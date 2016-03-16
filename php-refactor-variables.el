@@ -83,6 +83,17 @@
   (interactive)
   (php-refactor-select-variable (php-refactor-get-variable)))
 
+(defun php-refactor-inline-variable ()
+  "Inline variable definition."
+  (interactive)
+  (-let (((&alist 'uses uses 'name name) (php-refactor-get-variable))
+         (len (length name)))
+    (mapc (-lambda ((&alist 'position beg))
+            (goto-char beg)
+            (delete-region (point) (+ beg len))
+            (insert )))
+    ))
+
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
 (provide 'php-refactor-variables)

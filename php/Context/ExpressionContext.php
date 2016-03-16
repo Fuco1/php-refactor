@@ -13,4 +13,11 @@ class ExpressionContext extends Context {
         $this->curlyDepth = $curlyDepth;
         $this->id = $id;
     }
+
+    public function export() {
+        $export = parent::export();
+        return array_merge($export, array(
+            'text' => $this->string()
+        ));
+    }
 }

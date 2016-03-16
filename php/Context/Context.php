@@ -12,4 +12,15 @@ abstract class Context {
     public function beg() {
         return $this->position;
     }
+
+    public function export() {
+        return array(
+            'position' => $this->position,
+            'id' => $this->id
+        );
+    }
+
+    public function __toString() {
+        return json_encode($this->export());
+    }
 }
