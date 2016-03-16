@@ -26,7 +26,10 @@
 
 ;;; Code:
 
+(require 'thingatpt)
+
 (require 'json)
+(require 'multiple-cursors)
 
 (defun php-refactor-get-variables (file)
   "Get variables."
