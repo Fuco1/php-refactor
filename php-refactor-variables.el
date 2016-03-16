@@ -67,7 +67,7 @@
           (point (point))
           (len (length name))
           (current-start nil))
-    (mapc (-lambda ((&alist 'position beg))
+    (mapc (-lambda ((&alist 'beg beg))
             (if (and (<= beg point)
                      (< point (+ beg len)))
                 (setq current-start beg)
