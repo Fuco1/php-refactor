@@ -20,4 +20,8 @@ trait TextualContext {
     public function string() {
         return implode('', $this->text);
     }
+
+    public function length() {
+        return mb_strlen($this->string(), "UTF-8");
+    }
 }
