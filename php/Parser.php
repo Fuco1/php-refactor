@@ -163,7 +163,7 @@ class Parser {
                         $this->position,
                         // FIXME: we need to resolve expressions to
                         // current function scope too
-                        isset($expression) ? $expression->id :
+                        isset($expression) ? $expression :
                         (isset($function->arglist->opened) ? 0 : -1));
                     break;
             }
