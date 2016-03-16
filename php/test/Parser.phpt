@@ -165,12 +165,12 @@ function foo() {
         $vars = $parser->getVariables();
         // not a part of expression, is on the LHS
         Assert::equal(-1, $vars[1]['$bar']->uses[0]->expression);
-        Assert::equal(0, $vars[2]['$x']->uses[0]->expression);
-        Assert::equal(0, $vars[2]['$x']->uses[1]->expression);
-        Assert::equal(2, $vars[2]['$x']->uses[2]->expression);
-        Assert::equal(1, $vars[2]['$y']->uses[0]->expression);
+        Assert::equal(0, $vars[2]['$x']->uses[0]->expression->id);
+        Assert::equal(0, $vars[2]['$x']->uses[1]->expression->id);
+        Assert::equal(2, $vars[2]['$x']->uses[2]->expression->id);
+        Assert::equal(1, $vars[2]['$y']->uses[0]->expression->id);
         // is part of the outer expression assigned to $bar
-        Assert::equal(0, $vars[2]['$foo']->uses[0]->expression);
+        Assert::equal(0, $vars[2]['$foo']->uses[0]->expression->id);
     }
 
     public function testGetFunctionAtPoint() {
