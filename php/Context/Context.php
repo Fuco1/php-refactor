@@ -15,7 +15,7 @@ abstract class Context {
 
     public function export() {
         return array(
-            'position' => $this->position,
+            'beg' => $this->position,
             'id' => $this->id
         );
     }
