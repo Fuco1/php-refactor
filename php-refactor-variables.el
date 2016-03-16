@@ -89,13 +89,35 @@
 (defun php-refactor-inline-variable ()
   "Inline variable definition."
   (interactive)
-  (-let (((&alist 'uses uses 'name name) (php-refactor-get-variable))
-         (len (length name)))
-    (mapc (-lambda ((&alist 'position beg))
-            (goto-char beg)
-            (delete-region (point) (+ beg len))
-            (insert )))
-    ))
+  (-let* (((&alist 'uses uses 'name name) (php-refactor-get-variable))
+          (uses (append uses nil))
+          (len (length name))
+          ;; TODO: extract "current variable" finding logic
+          (current-var (-find (-lambda ((&alist 'beg beg))
+                                (and (>= (point) beg)
+                                     (< (point) (+ beg len)))) uses))
+          (inlined-var
+           (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
+                    (and (<= beg (cdr (assoc 'beg current-var)))
+                         (consp expr)))
+                  (reverse uses)))
+          ((&alist 'assignedExpression (&alist 'text text
+                                               'end inline-expr-end)
+                   'beg inline-beg) inlined-var)
+          (text (s-trim (s-chop-suffix ";" (s-trim text)))))
+    (save-excursion
+      (catch 'done
+        (mapc (-lambda ((&alist 'beg beg))
+                (goto-char beg)
+                (cond
+                 ((= (point) inline-beg)
+                  (delete-region inline-beg inline-expr-end)
+                  (delete-blank-lines))
+                 ((> (point) inline-beg)
+                  (delete-region (point) (+ beg len))
+                  (insert text))
+                 (t (throw 'done t))))
+              (reverse uses))))))
 
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
