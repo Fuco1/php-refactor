@@ -224,6 +224,10 @@ class Parser {
                     if (count($variable->uses) === 1) {
                         $variable->initialized = true;
                     }
+                    if (isset($variable)) {
+                        $lastUsage = end(array_values($variable->uses));
+                        $lastUsage->assignedExpression = $expression;
+                    }
                     break;
                 case ';':
                     if (!is_null($expression)) {
