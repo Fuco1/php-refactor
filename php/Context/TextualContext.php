@@ -1,9 +1,13 @@
 <?php
 
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\SerializedName as SerializedName;
+
 /**
  * A trait enabling a Context to record its textual representation.
  *
- * @author Matus Goljer
+ * @ExclusionPolicy("all")
  */
 trait TextualContext {
 
@@ -16,6 +20,8 @@ trait TextualContext {
      * Return the code string spanning this context.
      *
      * @return string Code
+     * @VirtualProperty
+     * @SerializedName("text")
      */
     public function string() {
         return implode('', $this->text);

@@ -1,24 +1,24 @@
 <?php
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\SerializedName as SerializedName;
+use JMS\Serializer\Annotation\Expose as Expose;
+
+/**
+ * @ExclusionPolicy("all")
+ */
 class VariableUsage extends Context {
 
+    /** @Expose */
     public $expression = -1; // -1 = uninitialized
+    /**
+     * @Expose
+     * @SerializedName("assignedExpression")
+     */
     public $assignedExpression = -1;
 
     public function __construct($position, $expression) {
         parent::__construct($position);
         $this->expression = $expression;
-    }
-
-    public function export() {
-        $export = parent::export();
-        return array_merge($export, array(
-            'expression' => is_object($this->expression) ?
-            $this->expression->export() :
-            $this->expression,
-            'assignedExpression' => is_object($this->assignedExpression) ?
-            $this->assignedExpression->export() :
-            $this->assignedExpression,
-        ));
     }
 }

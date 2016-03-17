@@ -1,5 +1,11 @@
 <?php
 
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+
+/**
+ * @ExclusionPolicy("all")
+ */
 class ExpressionContext extends Context {
 
     use TextualContext;
@@ -14,15 +20,8 @@ class ExpressionContext extends Context {
         $this->id = $id;
     }
 
+    /** @VirtualProperty */
     public function end() {
         return $this->beg() + $this->length();
-    }
-
-    public function export() {
-        $export = parent::export();
-        return array_merge($export, array(
-            'end' => $this->end(),
-            'text' => $this->string()
-        ));
     }
 }

@@ -12,3 +12,7 @@ $loader = new Nette\Loaders\RobotLoader;
 $loader->addDirectory(__DIR__.'/php');
 $loader->setCacheStorage(new Nette\Caching\Storages\FileStorage($cacheDir));
 $loader->register(); // Run the RobotLoader
+
+\Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
+    'JMS\Serializer\Annotation',
+    __DIR__ . "/vendor/jms/serializer/src");

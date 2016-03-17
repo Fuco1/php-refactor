@@ -1,5 +1,11 @@
 <?php
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+
+/**
+ * @ExclusionPolicy("all")
+ */
 class ArglistContext extends Context {
 
     public $parenDepth;
@@ -9,18 +15,12 @@ class ArglistContext extends Context {
      * List of variables in the argument list
      *
      * @var VariableContext[]
+     * @Expose
      */
     public $variables = [];
 
     public function __construct($position, $parenDepth) {
         parent::__construct($position);
         $this->parenDepth = $parenDepth;
-    }
-
-    public function export() {
-        $export = parent::export();
-        return array_merge($export, array(
-            'variables' => array_map(function ($v) { return $v->export(); }, $this->variables)
-        ));
     }
 }

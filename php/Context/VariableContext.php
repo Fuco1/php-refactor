@@ -1,17 +1,30 @@
 <?php
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+
+/**
+ * @ExclusionPolicy("all")
+ */
 class VariableContext extends Context {
+
+    /** @Expose  */
     public $name;
+    /** @Expose  */
     public $initialized = false;
     /**
      * Indicate whether the variable a function argument.
+     * @Expose
      */
     public $argument = false;
     // 0 = global
+    /** @Expose  */
     public $function;
     /**
      * List of usages
      * @var VariableUsage[]
+     * @Expose
      */
     public $uses = [];
 
@@ -20,18 +33,8 @@ class VariableContext extends Context {
         $this->name = $name;
     }
 
+    /** @VirtualProperty */
     public function end() {
         return $this->beg() + mb_strlen($this->name, "UTF-8");
-    }
-
-    public function export() {
-        $export = parent::export();
-        return array_merge($export, array(
-            'name' => $this->name,
-            'initialized' => $this->initialized,
-            'argument' => $this->argument,
-            'function' => $this->function,
-            'uses' => array_map(function ($u) { return $u->export(); }, $this->uses)
-        ));
     }
 }

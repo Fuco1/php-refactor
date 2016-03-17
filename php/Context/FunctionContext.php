@@ -1,11 +1,19 @@
 <?php
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
+use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
+
+/**
+ * @ExclusionPolicy("all")
+ */
 class FunctionContext extends Context {
 
     use TextualContext;
 
     public $parenDepth;
     public $curlyDepth;
+    /** @Expose */
     public $arglist = null;
 
     public function __construct($position, $parenDepth, $curlyDepth, $id) {
@@ -21,13 +29,5 @@ class FunctionContext extends Context {
 
     public function containsPoint($point) {
         return $this->beg() <= $point && $point < $this->end();
-    }
-
-    public function export() {
-        $export = parent::export();
-        return array_merge($export, array(
-            'arglist' => $this->arglist->export(),
-            'text' => $this->string()
-        ));
     }
 }

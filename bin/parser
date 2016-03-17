@@ -6,21 +6,15 @@ include __DIR__ . '/../bootstrap.php';
 $parser = new Parser(file_get_contents($argv[2]));
 $parser->parse();
 
-function export($context) {
-    return $context->export();
-}
-
 switch ($argv[1]) {
     case 'variables':
-        $data = json_encode(array_map(function ($v) {
-                    return array_map('export', $v);
-                }, $parser->getVariables()), true);
+        $data = json_encode($parser->getVariables());
         break;
     case 'variable':
-        $data = json_encode($parser->getVariableAtPoint($argv[3])->export(), true);
+        $data = json_encode($parser->getVariableAtPoint($argv[3]));
         break;
     case 'functions':
-        $data = json_encode(array_map('export', $parser->getFunctions()), true);
+        $data = json_encode($parser->getFunctions());
         break;
 }
 
