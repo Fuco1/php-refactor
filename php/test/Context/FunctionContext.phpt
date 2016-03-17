@@ -18,6 +18,12 @@ class FunctionContextTest extends TestCase {
         $context->text[] = "function () {}";
         Assert::equal('{"beg":10,"id":1,"text":"function () {}","arglist":{"beg":15,"variables":[{"beg":10,"end":14,"name":"$foo","initialized":false,"argument":false,"uses":[]}]}}', json_encode($context));
     }
+
+    public function testEnd() {
+        $context = new FunctionContext(10, 0, 0, 1);
+        $context->text[] = "function () {}";
+        Assert::equal(24, $context->end());
+    }
 }
 
 $test = new FunctionContextTest();

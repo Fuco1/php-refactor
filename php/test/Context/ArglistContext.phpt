@@ -17,6 +17,13 @@ class ArglistContextTest extends TestCase {
         $context->variables[] = new VariableContext(10, '$foo');
         Assert::equal('{"beg":10,"id":1,"variables":[{"beg":10,"end":14,"name":"$foo","initialized":false,"argument":false,"uses":[]}]}', json_encode($context));
     }
+
+    public function testEnd() {
+        $context = new ArglistContext(10, 0);
+        $context->variables[] = new VariableContext(10, '$foo');
+        $context->variables[] = new VariableContext(16, '$bar');
+        Assert::equal(20, $context->end());
+    }
 }
 
 $test = new ArglistContextTest();

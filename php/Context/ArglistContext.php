@@ -23,4 +23,8 @@ class ArglistContext extends Context {
         parent::__construct($position);
         $this->parenDepth = $parenDepth;
     }
+
+    public function end() {
+        return end(array_values($this->variables))->end();
+    }
 }

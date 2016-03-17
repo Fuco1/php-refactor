@@ -22,6 +22,10 @@ abstract class Context implements JsonSerializable {
         return $this->position;
     }
 
+    public function end() {
+        return $this->beg();
+    }
+
     public function jsonSerialize() {
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
         return json_decode($serializer->serialize($this, 'json'), true);
