@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../../../bootstrap.php';
 
+use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -18,6 +19,9 @@ class ContextTest extends TestCase {
     }
 }
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class TestContext extends Context {
 }
 
