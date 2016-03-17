@@ -14,8 +14,6 @@ class ArglistContext extends Context {
 
     public function __construct($position, $parenDepth) {
         parent::__construct($position);
-        $a = function ($position) { return $a; };
-        $a = $this->export($position);
         $this->parenDepth = $parenDepth;
     }
 
