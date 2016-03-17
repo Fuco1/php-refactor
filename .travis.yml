@@ -16,4 +16,4 @@ matrix:
 before_install:
   - composer install
 script:
-  - ./vendor/bin/tester -p $TESTER_PHP_BIN php/test/
+  - ./vendor/bin/tester -p $TESTER_PHP_BIN -c php/test/php.ini php/test/
