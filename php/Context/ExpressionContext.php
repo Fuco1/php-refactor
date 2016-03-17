@@ -14,10 +14,14 @@ class ExpressionContext extends Context {
         $this->id = $id;
     }
 
+    public function end() {
+        return $this->beg() + $this->length();
+    }
+
     public function export() {
         $export = parent::export();
         return array_merge($export, array(
-            'end' => $this->beg() + $this->length(),
+            'end' => $this->end(),
             'text' => $this->string()
         ));
     }
