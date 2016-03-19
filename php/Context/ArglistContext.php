@@ -25,6 +25,7 @@ class ArglistContext extends Context {
     }
 
     public function end() {
-        return end(array_values($this->variables))->end();
+        $values = array_values($this->variables);
+        return end($values)->end();
     }
 }

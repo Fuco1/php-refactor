@@ -246,7 +246,8 @@ class Parser {
                         $variable->initialized = true;
                     }
                     if (isset($variable)) {
-                        $lastUsage = end(array_values($variable->uses));
+                        $values = array_values($variable->uses);
+                        $lastUsage = end($values);
                         $lastUsage->assignedExpression = $expression;
                     }
                     break;
