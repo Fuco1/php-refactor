@@ -31,8 +31,8 @@ class Parser {
         $variables = $this->getVariables()[$functionId];
         foreach ($variables as $name => $variable) {
             foreach ($variable->uses as $usage) {
-                if ($usage->position <= $point &&
-                    $point < ($usage->position + mb_strlen($name, "UTF-8"))) {
+                if ($usage->beg() <= $point &&
+                    $point < ($usage->beg() + mb_strlen($name, "UTF-8"))) {
                     return $variable;
                 }
             }
