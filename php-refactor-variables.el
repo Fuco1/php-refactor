@@ -31,6 +31,9 @@
 (require 'json)
 (require 'multiple-cursors)
 
+(defvar php-refactor-parser (concat (f-dirname (f-this-file)) "/bin/parser")
+  "Path to php parser executable.")
+
 (defun php-refactor-run-parser (command &rest args)
   "Run php parser with COMMAND.
 
@@ -43,7 +46,7 @@ ARGS are arguments for the parser for the specified command."
             (apply
              'call-process
              "php" nil (current-buffer) nil
-             "/home/matus/.emacs.d/projects/php-refactor/bin/parser" command tmp-file args)
+             php-refactor-parser command tmp-file args)
             ;; (pop-to-buffer (current-buffer))
             (goto-char (point-min))
             (json-read)))
