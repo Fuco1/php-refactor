@@ -31,33 +31,32 @@
 (require 'json)
 (require 'multiple-cursors)
 
-(defun php-refactor-get-variables (file)
+(defun php-refactor-run-parser (command &rest args)
+  "Run php parser with COMMAND.
+
+ARGS are arguments for the parser for the specified command."
+  (let ((tmp-file (make-temp-file "php-refactor")))
+    (unwind-protect
+        (progn
+          (write-region (point-min) (point-max) tmp-file)
+          (with-temp-buffer
+            (apply
+             'call-process
+             "php" nil (current-buffer) nil
+             "/home/matus/.emacs.d/projects/php-refactor/bin/parser" command tmp-file args)
+            ;; (pop-to-buffer (current-buffer))
+            (goto-char (point-min))
+            (json-read)))
+      (delete-file tmp-file))))
+
+(defun php-refactor-get-variables ()
   "Get variables."
-  (with-temp-buffer
-    (call-process
-     "php" nil (current-buffer) nil
-     "/home/matus/.emacs.d/projects/php-refactor/bin/parser" "variables" file)
-    ;; (pop-to-buffer (current-buffer))
-    (goto-char (point-min))
-    (json-read)))
+  (php-refactor-run-parser "variables"))
 
-;; (php-refactor-get-variables "/home/matus/.emacs.d/projects/php-refactor/php/RunParserTest.php")
-
-(defun php-refactor-get-variable (&optional file point)
-  "Get variable at point."
-  ;; TODO: add mechanism to copy TRAMP files locally and run analysis on those
-  (setq file (or file (buffer-file-name)))
+(defun php-refactor-get-variable (&optional point)
+  "Get variable at POINT."
   (setq point (or point (point)))
-  (with-temp-buffer
-    (call-process
-     "php" nil (current-buffer) nil
-     "/home/matus/.emacs.d/projects/php-refactor/bin/parser" "variable" file (number-to-string point))
-    ;; (pop-to-buffer (current-buffer))
-    (goto-char (point-min))
-    (json-read)))
-
-;; (php-refactor-get-variable "./php/RunParser.php" 12)
-;; (php-refactor-get-variable "./php/Parser.php" 712)
+  (php-refactor-run-parser "variable" (number-to-string point)))
 
 (defun php-refactor-select-variable (variable)
   "Select all occurrences of VARIABLE in current function."
