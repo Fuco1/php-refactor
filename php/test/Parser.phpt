@@ -3,13 +3,12 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Tester\Assert;
-use Tester\TestCase;
 
 /**
  * @author Matus Goljer
  * @testCase
  */
-class ParserTest extends TestCase {
+class ParserTest extends MyTestCase {
 
     private $input1 = '<?php
 $foo = 2;

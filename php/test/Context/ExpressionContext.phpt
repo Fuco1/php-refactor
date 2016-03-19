@@ -3,13 +3,12 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Tester\Assert;
-use Tester\TestCase;
 
 /**
  * @author Matus Goljer
  * @TestCase
  */
-class ExpressionContextTest extends TestCase {
+class ExpressionContextTest extends MyTestCase {
 
     public function testExport() {
         $context = new ExpressionContext(10, 0, 0, 1);

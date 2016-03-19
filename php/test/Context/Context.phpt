@@ -4,13 +4,12 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
 use Tester\Assert;
-use Tester\TestCase;
 
 /**
  * @author Matus Goljer
  * @TestCase
  */
-class ContextTest extends TestCase {
+class ContextTest extends MyTestCase {
 
     public function testExport() {
         $context = new TestContext(10);
