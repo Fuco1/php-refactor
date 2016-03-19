@@ -211,6 +211,16 @@ function foo() {
         );
     }
 
+    public function testGetFunctionIdAtPoint() {
+        $parser = new Parser($this->input1);
+        $parser->parse();
+
+        Assert::equal(0, $parser->getFunctionIdAtPoint(10));
+        Assert::equal(0, $parser->getFunctionIdAtPoint(85));
+        Assert::equal(1, $parser->getFunctionIdAtPoint(91));
+        Assert::equal(2, $parser->getFunctionIdAtPoint(138));
+    }
+
     public function testGetVariableAtPoint() {
         $parser = new Parser($this->input1);
         $parser->parse();

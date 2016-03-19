@@ -26,11 +26,7 @@ class Parser {
     }
 
     public function getVariableAtPoint($point) {
-        $function = $this->getFunctionAtPoint($point);
-        $functionId = 0; // global scope by default
-        if (isset($function)) {
-            $functionId = $function->id;
-        }
+        $functionId = $this->getFunctionIdAtPoint($point);
 
         $variables = $this->getVariables()[$functionId];
         foreach ($variables as $name => $variable) {
@@ -51,6 +47,21 @@ class Parser {
 
     public function getFunctions() {
         return $this->functions;
+    }
+
+    /**
+     * Return id of the function at point
+     *
+     * @param int $point
+     * @return int Function id or 0 for global scope
+     */
+    public function getFunctionIdAtPoint($point) {
+        $function = $this->getFunctionAtPoint($point);
+        $functionId = 0; // global scope by default
+        if (isset($function)) {
+            $functionId = $function->id;
+        }
+        return $functionId;
     }
 
     /**
