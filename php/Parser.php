@@ -85,6 +85,17 @@ class Parser {
         return $last;
     }
 
+    /**
+     * Return variables defined in current function's scope.
+     *
+     * @param int $point
+     * @return VariableContext[]
+     */
+    public function getVariablesAtPoint($point) {
+        $functionId = $this->getFunctionIdAtPoint($point);
+        return $this->getVariables()[$functionId];
+    }
+
     public function parse() {
         $tokens = token_get_all($this->data);
 

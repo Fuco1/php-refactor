@@ -53,6 +53,11 @@ ARGS are arguments for the parser for the specified command."
   "Get variables."
   (php-refactor-run-parser "variables"))
 
+(defun php-refactor-get-variables-at-point (&optional point)
+  "Get variables at POINT."
+  (setq point (or point (point)))
+  (php-refactor-run-parser "variables-at-point" (number-to-string point)))
+
 (defun php-refactor-get-variable (&optional point)
   "Get variable at POINT."
   (setq point (or point (point)))

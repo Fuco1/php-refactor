@@ -16,6 +16,9 @@ switch ($argv[1]) {
     case 'functions':
         $data = json_encode($parser->getFunctions());
         break;
+    case 'variables-at-point':
+        $data = json_encode($parser->getVariablesAtPoint($argv[3]));
+        break;
 }
 
 echo $data;

@@ -243,6 +243,32 @@ function foo() {
         Assert::equal(2, $parser->getVariableAtPoint(118)->function);
         Assert::equal('$bar', $parser->getVariableAtPoint(138)->name);
     }
+
+    public function testGetVariablesAtPoint() {
+        $parser = new Parser('<?php
+function foo($a, $b) {
+    $tmp = 1;
+    return $a + $tmp;
+}
+echo "foo";
+function bar($c, $d) {
+    $tmp2 = 1;
+    return $d + $tmp2;
+}
+');
+        $parser->parse();
+        $variables = $parser->getVariablesAtPoint(41);
+        Assert::equal(['$a', '$b', '$tmp'], array_keys($variables));
+        $variables = $parser->getVariablesAtPoint(84);
+        Assert::equal(['$c', '$d', '$tmp2'], array_keys($variables));
+        $variables = $parser->getVariablesAtPoint(72);
+        Assert::null($variables);
+
+        $parser = new Parser('<?php $foo = 1;');
+        $parser->parse();
+        $variables = $parser->getVariablesAtPoint(10);
+        Assert::equal(['$foo'], array_keys($variables));
+    }
 }
 
 $test = new ParserTest();
