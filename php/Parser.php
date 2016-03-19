@@ -93,7 +93,11 @@ class Parser {
      */
     public function getVariablesAtPoint($point) {
         $functionId = $this->getFunctionIdAtPoint($point);
-        return $this->getVariables()[$functionId];
+        $variables = $this->getVariables();
+        if (isset($variables[$functionId])) {
+            return $variables[$functionId];
+        }
+        return null;
     }
 
     public function parse() {
