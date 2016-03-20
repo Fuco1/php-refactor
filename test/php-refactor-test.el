@@ -1,16 +1,9 @@
-(defun php-refactor-test--setup-buffer ()
-  "Setup the test buffer."
-  (php-mode)
-  (delete-selection-mode 1)
-  (transient-mark-mode 1))
-
 (ert-deftest php-refactor-test-rename-variable ()
   (let ((initial "<?php
 $foo = 1;
 $bar = $f|oo + $a;
 return $foo;"))
-    (php-refactor-test-with-temp-buffer initial
-        (php-refactor-test--setup-buffer)
+    (php-refactor-test-with-php-buffer initial
       (php-refactor-rename-variable)
       (execute-kbd-macro "baz")
       (insert "|")
@@ -24,8 +17,7 @@ return $baz;")))))
 $f|oo = 1;
 $bar = function ($foo) { return $foo + $a; };
 return $foo;"))
-    (php-refactor-test-with-temp-buffer initial
-        (php-refactor-test--setup-buffer)
+    (php-refactor-test-with-php-buffer initial
       (php-refactor-rename-variable)
       (execute-kbd-macro "baz")
       (insert "|")
@@ -39,8 +31,7 @@ return $baz;")))))
 $foo = 1;
 $bar = function ($fo|o) { return $foo + $a; };
 return $foo;"))
-    (php-refactor-test-with-temp-buffer initial
-        (php-refactor-test--setup-buffer)
+    (php-refactor-test-with-php-buffer initial
       (php-refactor-rename-variable)
       (execute-kbd-macro "baz")
       (insert "|")

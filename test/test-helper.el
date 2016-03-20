@@ -51,5 +51,19 @@ Finally, FORMS are run."
            (delete-char -1))
          ,@forms))))
 
+(defmacro php-refactor-test-with-php-buffer (initial &rest forms)
+  "Setup test buffer for php."
+  (declare (indent 1)
+           (debug (form body)))
+  `(php-refactor-test-with-temp-buffer ,initial
+       (php-refactor-test--setup-buffer)
+     ,@forms))
+
+(defun php-refactor-test--setup-buffer ()
+  "Setup the test buffer."
+  (php-mode)
+  (delete-selection-mode 1)
+  (transient-mark-mode 1))
+
 (provide 'test-helper)
 ;;; test-helper.el ends here
