@@ -1,19 +1,21 @@
 language: php
-matrix:
-  include:
-    - php: '5.4'
-      env: TESTER_PHP_BIN="php-cgi"
-    - php: '5.5'
-      env: TESTER_PHP_BIN="php-cgi"
-    - php: '5.6'
-      env: TESTER_PHP_BIN="php-cgi"
-    - php: '7.0'
-      env: TESTER_PHP_BIN="php-cgi"
-    - php: hhvm
-      env: TESTER_PHP_BIN="hhvm"
-    - php: nightly
-      env: TESTER_PHP_BIN="php-cgi"
+php:
+  - '5.4'
+  - '5.5'
+  - '5.6'
+  - '7.0'
+  - hhvm
+  - nightly
+env:
+  - EVM_EMACS=emacs-24.3-travis
+  - EVM_EMACS=emacs-24.4-travis
+  - EVM_EMACS=emacs-24.5-travis
 before_install:
   - composer install
+  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
+  - evm install "$EVM_EMACS" --use --skip
+  - cask install
+  - if [ "$TRAVIS_PHP_VERSION" = hhvm ]; then export TESTER_PHP_BIN="hhvm"; else export TESTER_PHP_BIN="php-cgi"; fi
 script:
   - ./vendor/bin/tester -p $TESTER_PHP_BIN -c php/test/php.ini php/test/
+  - cask exec ert-runner
