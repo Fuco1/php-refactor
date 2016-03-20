@@ -134,7 +134,5 @@ ARGS are arguments for the parser for the specified command."
                 (insert text))))
             (reverse uses)))))
 
-;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
-
 (provide 'php-refactor)
 ;;; php-refactor.el ends here
