@@ -103,25 +103,22 @@ ARGS are arguments for the parser for the specified command."
           (uses (append uses nil))
           (len (length name))
           ;; TODO: extract "current variable" finding logic
-          (current-var (-find (-lambda ((&alist 'beg beg))
-                                (and (>= (point) beg)
-                                     (< (point) (+ beg len)))) uses))
+          ((&alist 'beg current-beg)
+           (-find (-lambda ((&alist 'beg beg))
+                    (and (>= (point) beg) (< (point) (+ beg len)))) uses))
           ;; first usage to which an expression is assigned before the
           ;; current var
-          (inlined-var
-           (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
-                    (and (<= beg (cdr (assoc 'beg current-var)))
-                         (consp expr)))
-                  (reverse uses)))
           ((&alist 'assignedExpression (&alist 'text text
                                                'end inline-expr-end)
-                   'beg inline-beg) inlined-var)
+                   'beg inline-beg)
+           (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
+                    (and (<= beg current-beg) (consp expr)))
+                  (reverse uses)))
           ;; first usage to which an expression is assigned after the
           ;; current var
           ((&alist 'beg limit-beg)
            (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
-                    (and (> beg (cdr (assoc 'beg current-var)))
-                         (consp expr)))
+                    (and (> beg current-beg) (consp expr)))
                   uses))
           (text (s-trim (s-chop-suffix ";" (s-trim text)))))
     (save-excursion
