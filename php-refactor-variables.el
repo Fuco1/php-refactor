@@ -1,4 +1,4 @@
-;;; php-refactor-variables.el --- Refactoring library for php
+;;; php-refactor.el --- Refactoring library for php
 
 ;; Copyright (C) 2016 Matúš Goljer
 
@@ -130,5 +130,5 @@ ARGS are arguments for the parser for the specified command."
 
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
-(provide 'php-refactor-variables)
-;;; php-refactor-variables.el ends here
+(provide 'php-refactor)
+;;; php-refactor.el ends here
