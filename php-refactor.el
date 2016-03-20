@@ -100,6 +100,7 @@ ARGS are arguments for the parser for the specified command."
   "Inline variable definition."
   (interactive)
   (-let* (((&alist 'uses uses 'name name) (php-refactor--get-variable))
+          ;; TODO: convert vector to list somewhere in the loader
           (uses (append uses nil))
           (len (length name))
           ;; TODO: extract "current variable" finding logic
