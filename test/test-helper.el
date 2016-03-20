@@ -35,21 +35,22 @@ Finally, FORMS are run."
   (declare (indent 2)
            (debug (form form body)))
   `(save-window-excursion
-     (let ((case-fold-search nil))
-       (with-temp-buffer
-         (set-input-method nil)
-         ,initform
-         (pop-to-buffer (current-buffer))
-         (insert ,initial)
-         (goto-char (point-min))
+     (with-temp-buffer
+       (set-input-method nil)
+       ,initform
+       (pop-to-buffer (current-buffer))
+       (insert ,initial)
+       (goto-char (point-min))
+       (let ((case-fold-search nil))
          (when (search-forward "M" nil t)
            (delete-char -1)
            (set-mark (point))
-           (activate-mark))
-         (goto-char (point-min))
+           (activate-mark)))
+       (goto-char (point-min))
+       (let ((case-fold-search nil))
          (when (search-forward "|" nil t)
-           (delete-char -1))
-         ,@forms))))
+           (delete-char -1)))
+       ,@forms)))
 
 (defmacro php-refactor-test-with-php-buffer (initial &rest forms)
   "Setup test buffer for php."
