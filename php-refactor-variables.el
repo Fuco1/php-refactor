@@ -6,7 +6,7 @@
 ;; Maintainer: Matúš Goljer <matus.goljer@gmail.com>
 ;; Version: 0.0.1
 ;; Created: 8th March 2016
-;; Package-requires: ((dash "2.12.0"))
+;; Package-requires: ((dash "2.12.0") (multiple-cursors "1.2.2") (f "0.17.0"))
 ;; Keywords: languages, convenience
 
 ;; This program is free software; you can redistribute it and/or
@@ -27,8 +27,10 @@
 ;;; Code:
 
 (require 'thingatpt)
-
 (require 'json)
+
+(require 'f)
+(require 'dash)
 (require 'multiple-cursors)
 
 (defvar php-refactor-parser (concat (f-dirname (f-this-file)) "/bin/parser")
