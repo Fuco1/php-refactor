@@ -39,3 +39,86 @@ return $foo;"))
 $foo = 1;
 $bar = function ($baz|) { return $baz + $a; };
 return $foo;")))))
+
+(defun php-refactor-test--inline-variable (initial expected)
+  "Test variable inlining."
+  (php-refactor-test-with-php-buffer initial
+    (php-refactor-inline-variable)
+    (insert "|")
+    (should (equal (buffer-string) expected))))
+
+(ert-deftest php-refactor-test-inline-variable ()
+  (php-refactor-test--inline-variable
+   "<?php
+$a = foo(($b + 4) . 'asd');
+foreach ($|a as $item) {
+    break;
+}
+return $a;"
+   "<?php
+foreach (|foo(($b + 4) . 'asd') as $item) {
+    break;
+}
+return foo(($b + 4) . 'asd');"))
+
+(ert-deftest php-refactor-test-inline-variable-multiple-assignment-first ()
+  (php-refactor-test--inline-variable
+   "<?php
+$a = 1;
+$b = $|a;
+$c = $a + $b;
+$a = 2;
+$b = $a;
+$c = $a + $b;"
+   "<?php
+$b = |1;
+$c = 1 + $b;
+$a = 2;
+$b = $a;
+$c = $a + $b;"))
+
+(ert-deftest php-refactor-test-inline-variable-multiple-assignment-second ()
+  (php-refactor-test--inline-variable
+   "<?php
+$a = 1;
+$b = $a;
+$c = $a + $b;
+$a = 2;
+$b = $|a;
+$c = $a + $b;"
+   "<?php
+$a = 1;
+$b = $a;
+$c = $a + $b;
+$b = |2;
+$c = 2 + $b;"))
+
+(ert-deftest php-refactor-test-inline-variable-nested-function-outside ()
+  (php-refactor-test--inline-variable
+   "<?php
+$a = 1;
+$b = $|a;
+$c = function ($b) { return $a + $b };
+return $a;"
+   "<?php
+$b = |1;
+$c = function ($b) { return $a + $b };
+return 1;"))
+
+(ert-deftest php-refactor-test-inline-variable-nested-function-inside ()
+  (php-refactor-test--inline-variable
+   "<?php
+$a = 1;
+$b = $a;
+$c = function ($b) {
+    $a = 'foo';
+    return $|a + $b
+};
+return $a;"
+   "<?php
+$a = 1;
+$b = $a;
+$c = function ($b) {
+    return |'foo' + $b
+};
+return $a;"))

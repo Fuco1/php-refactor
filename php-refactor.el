@@ -106,6 +106,8 @@ ARGS are arguments for the parser for the specified command."
           (current-var (-find (-lambda ((&alist 'beg beg))
                                 (and (>= (point) beg)
                                      (< (point) (+ beg len)))) uses))
+          ;; first usage to which an expression is assigned before the
+          ;; current var
           (inlined-var
            (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
                     (and (<= beg (cdr (assoc 'beg current-var)))
@@ -114,20 +116,25 @@ ARGS are arguments for the parser for the specified command."
           ((&alist 'assignedExpression (&alist 'text text
                                                'end inline-expr-end)
                    'beg inline-beg) inlined-var)
+          ;; first usage to which an expression is assigned after the
+          ;; current var
+          ((&alist 'beg limit-beg)
+           (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
+                    (and (> beg (cdr (assoc 'beg current-var)))
+                         (consp expr)))
+                  uses))
           (text (s-trim (s-chop-suffix ";" (s-trim text)))))
     (save-excursion
-      (catch 'done
-        (mapc (-lambda ((&alist 'beg beg))
-                (goto-char beg)
-                (cond
-                 ((= (point) inline-beg)
-                  (delete-region inline-beg inline-expr-end)
-                  (delete-blank-lines))
-                 ((> (point) inline-beg)
-                  (delete-region (point) (+ beg len))
-                  (insert text))
-                 (t (throw 'done t))))
-              (reverse uses))))))
+      (mapc (-lambda ((&alist 'beg beg))
+              (goto-char beg)
+              (cond
+               ((= (point) inline-beg)
+                (delete-region inline-beg inline-expr-end)
+                (delete-blank-lines))
+               ((and (> (point) inline-beg) (< (point) (or limit-beg (point-max))))
+                (delete-region (point) (+ beg len))
+                (insert text))))
+            (reverse uses)))))
 
 ;; (bind-key "C-x C-d v" 'php-refactor-rename-variable php-mode-map)
 
