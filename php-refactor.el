@@ -6,7 +6,7 @@
 ;; Maintainer: Matúš Goljer <matus.goljer@gmail.com>
 ;; Version: 0.0.1
 ;; Created: 8th March 2016
-;; Package-requires: ((dash "2.12.0") (multiple-cursors "1.2.2") (f "0.17.0"))
+;; Package-requires: ((dash "2.12.0") (multiple-cursors "1.2.2") (f "0.17.0") (shut-up "0.3"))
 ;; Keywords: languages, convenience
 
 ;; This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 (require 'f)
 (require 'dash)
 (require 'multiple-cursors)
+(require 'shut-up)
 
 (defvar php-refactor--parser (concat (f-dirname (f-this-file)) "/bin/parser")
   "Path to php parser executable.")
@@ -43,7 +44,7 @@ ARGS are arguments for the parser for the specified command."
   (let ((tmp-file (make-temp-file "php-refactor")))
     (unwind-protect
         (progn
-          (write-region (point-min) (point-max) tmp-file)
+          (shut-up-write-region (point-min) (point-max) tmp-file)
           (with-temp-buffer
             (apply
              'call-process
@@ -85,7 +86,7 @@ ARGS are arguments for the parser for the specified command."
               (mc/create-fake-cursor-at-point)))
           uses)
     (goto-char (1+ current-start))
-    (push-mark (+ current-start len))
+    (push-mark (+ current-start len) t)
     (setq deactivate-mark nil)
     (activate-mark)
     (mc/maybe-multiple-cursors-mode)))

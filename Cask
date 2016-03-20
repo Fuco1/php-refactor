@@ -6,9 +6,9 @@
 (depends-on "f" "0.17.0")
 (depends-on "dash" "2.12.1")
 (depends-on "multiple-cursors" "1.2.2")
+(depends-on "shut-up")
 
 (development
   (depends-on "php-mode")
   (depends-on "ert-runner")
-  (depends-on "undercover")
-  (depends-on "shut-up"))
+  (depends-on "undercover"))
