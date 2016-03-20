@@ -33,10 +33,10 @@
 (require 'dash)
 (require 'multiple-cursors)
 
-(defvar php-refactor-parser (concat (f-dirname (f-this-file)) "/bin/parser")
+(defvar php-refactor--parser (concat (f-dirname (f-this-file)) "/bin/parser")
   "Path to php parser executable.")
 
-(defun php-refactor-run-parser (command &rest args)
+(defun php-refactor--run-parser (command &rest args)
   "Run php parser with COMMAND.
 
 ARGS are arguments for the parser for the specified command."
@@ -48,27 +48,27 @@ ARGS are arguments for the parser for the specified command."
             (apply
              'call-process
              "php" nil (current-buffer) nil
-             php-refactor-parser command tmp-file args)
+             php-refactor--parser command tmp-file args)
             ;; (pop-to-buffer (current-buffer))
             (goto-char (point-min))
             (json-read)))
       (delete-file tmp-file))))
 
-(defun php-refactor-get-variables ()
+(defun php-refactor--get-variables ()
   "Get variables."
-  (php-refactor-run-parser "variables"))
+  (php-refactor--run-parser "variables"))
 
-(defun php-refactor-get-variables-at-point (&optional point)
+(defun php-refactor--get-variables-at-point (&optional point)
   "Get variables at POINT."
   (setq point (or point (point)))
-  (php-refactor-run-parser "variables-at-point" (number-to-string point)))
+  (php-refactor--run-parser "variables-at-point" (number-to-string point)))
 
-(defun php-refactor-get-variable (&optional point)
+(defun php-refactor--get-variable (&optional point)
   "Get variable at POINT."
   (setq point (or point (point)))
-  (php-refactor-run-parser "variable" (number-to-string point)))
+  (php-refactor--run-parser "variable" (number-to-string point)))
 
-(defun php-refactor-select-variable (variable)
+(defun php-refactor--select-variable (variable)
   "Select all occurrences of VARIABLE in current function."
   (-let* (((&alist 'uses uses 'name name) variable)
           ;; append to convert [] to ()
@@ -93,12 +93,12 @@ ARGS are arguments for the parser for the specified command."
 (defun php-refactor-rename-variable ()
   "Rename variable at point."
   (interactive)
-  (php-refactor-select-variable (php-refactor-get-variable)))
+  (php-refactor--select-variable (php-refactor--get-variable)))
 
 (defun php-refactor-inline-variable ()
   "Inline variable definition."
   (interactive)
-  (-let* (((&alist 'uses uses 'name name) (php-refactor-get-variable))
+  (-let* (((&alist 'uses uses 'name name) (php-refactor--get-variable))
           (uses (append uses nil))
           (len (length name))
           ;; TODO: extract "current variable" finding logic
