@@ -19,7 +19,7 @@
 
 (let ((dir (f-parent (f-dirname (f-this-file)))))
   (add-to-list 'load-path dir))
-(require 'php-refactor-variables)
+(require 'php-refactor)
 
 (defmacro php-refactor-test-with-temp-buffer (initial initform &rest forms)
   "Setup a new buffer, then run FORMS.
