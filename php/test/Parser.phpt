@@ -16,16 +16,18 @@ $bar = $foo + \'bar\';
 $quz = foo(\'foo\');
 $quz = foo($foo);
 $quz = foo(function () { return $bar; });
-
+$aaa = 1;
 function foo() { return 0; }
 ';
 
     private $input2 = '<?php
+$x = 1;
 $foo =
 function () {
    $bar = "foo";
-   return 0;
+   return $a;
 };
+$a = 1;
 ';
 
     private $input3 = '<?php
@@ -59,9 +61,17 @@ function foo($open, $close) {
         $expressions = $parser->getExpressions();
         Assert::equal('function () {
    $bar = "foo";
-   return 0;
-};', trim($expressions[0]->string()));
-        Assert::equal('"foo";', trim($expressions[1]->string()));
+   return $a;
+};', trim($expressions[1]->string()));
+        Assert::equal('"foo";', trim($expressions[2]->string()));
+        Assert::equal('1;', trim($expressions[3]->string()));
+    }
+
+    public function testVariableUsageAssignedExpression() {
+        $parser = new Parser($this->input2);
+        $parser->parse();
+        $variables = $parser->getVariables();
+        Assert::equal(1, $variables[1]['$a']->uses[0]->expression->id);
     }
 
     public function testSimpleFunctions() {

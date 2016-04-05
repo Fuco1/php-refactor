@@ -256,22 +256,10 @@ class Parser {
                     }
                     break;
                 case ';':
-                    if (!is_null($expression)) {
-                        // TODO: vytvorit helper na porovnanie "balancu"
-                        if ($parenDepth === $expression->parenDepth &&
-                            $curlyDepth === $expression->curlyDepth) {
-                            // sme na konci expression
-                            $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
-                            // TODO: abstract the following
-                            // expressions dealing with "reseting" the
-                            // top;
-                            array_pop($expressions);
-                            $expression = end($expressions);
-                            if (!$expression) {
-                                $expression = null;
-                            }
-                        }
-                    }
+                    $expression = $this->closeExpression(
+                        $expression, $expressions,
+                        $parenDepth, $curlyDepth
+                    );
                     break;
             }
             $this->position += mb_strlen($token[1], "UTF-8");
@@ -279,6 +267,26 @@ class Parser {
 
         //var_export($variables);
         $this->variables = $variables;
+    }
+
+    // TODO: vytvorit objekt "ParseState"
+    protected function closeExpression($expression, &$expressions, $parenDepth, $curlyDepth) {
+        if (!is_null($expression)) {
+            // TODO: vytvorit helper na porovnanie "balancu"
+            if ($parenDepth === $expression->parenDepth &&
+                $curlyDepth === $expression->curlyDepth) {
+                // sme na konci expression
+                $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
+                // TODO: abstract the following expressions dealing
+                // with "reseting" the top;
+                array_pop($expressions);
+                $expression = end($expressions);
+                if (!$expression) {
+                    $expression = null;
+                }
+            }
+        }
+        return $expression;
     }
 
     protected function debug($str) {
