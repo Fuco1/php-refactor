@@ -48,11 +48,11 @@ function foo($open, $close) {
         $parser = new Parser($this->input1);
         $parser->parse();
         $expressions = $parser->getExpressions();
-        Assert::equal('2;', trim($expressions[0]->string()));
-        Assert::equal('$foo + \'bar\';', trim($expressions[1]->string()));
-        Assert::equal('foo(\'foo\');', trim($expressions[2]->string()));
-        Assert::equal('foo($foo);', trim($expressions[3]->string()));
-        Assert::equal('foo(function () { return $bar; });', trim($expressions[4]->string()));
+        Assert::equal(' 2', $expressions[0]->string());
+        Assert::equal('$foo + \'bar\'', trim($expressions[1]->string()));
+        Assert::equal('foo(\'foo\')', trim($expressions[2]->string()));
+        Assert::equal('foo($foo)', trim($expressions[3]->string()));
+        Assert::equal('foo(function () { return $bar; })', trim($expressions[4]->string()));
     }
 
     public function testNestedExpressions() {
@@ -62,9 +62,11 @@ function foo($open, $close) {
         Assert::equal('function () {
    $bar = "foo";
    return $a;
-};', trim($expressions[1]->string()));
-        Assert::equal('"foo";', trim($expressions[2]->string()));
-        Assert::equal('1;', trim($expressions[3]->string()));
+}', trim($expressions[1]->string()));
+        Assert::equal('"foo"', trim($expressions[2]->string()));
+        Assert::equal('1', trim($expressions[3]->string()));
+    }
+
     }
 
     public function testVariableUsageAssignedExpression() {
@@ -126,7 +128,7 @@ return function ($bar) { return; };
         $parser->parse();
         $vars = $parser->getVariables();
         $expressions = $parser->getExpressions();
-        Assert::equal('$open + $baz;', trim($expressions[1]->string()));
+        Assert::equal('$open + $baz', trim($expressions[1]->string()));
         Assert::true($vars[1]['$open']->initialized);
         Assert::true($vars[1]['$foo']->initialized);
         Assert::true($vars[1]['$bar']->initialized);

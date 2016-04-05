@@ -276,6 +276,16 @@ class Parser {
             if ($parenDepth === $expression->parenDepth &&
                 $curlyDepth === $expression->curlyDepth) {
                 // sme na konci expression
+                // we don't want the closing expression
+                array_pop($expression->text);
+                // also get rid of any trailing whitespace
+                for ($i = count($expression->text) - 1; $i >=0; $i--) {
+                    if (trim($expression->text[$i]) == '') {
+                        unset($expression->text[$i]);
+                    } else {
+                        break;
+                    }
+                }
                 $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
                 // TODO: abstract the following expressions dealing
                 // with "reseting" the top;
