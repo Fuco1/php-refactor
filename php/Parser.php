@@ -164,7 +164,7 @@ class Parser {
                         $variable->function = 0;
                     }
                     if (!is_null($expression)) {
-                        $this->debug("(in expression {$expression->position}) ");
+                        $this->debug("(in expression {$expression->id}:{$expression->position}) ");
                     }
                     $this->debug("{$token[1]}" . PHP_EOL);
 
