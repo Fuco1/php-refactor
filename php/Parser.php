@@ -131,12 +131,12 @@ class Parser {
             // $position = sprintf("% 4d", $this->position);
             // echo "($position) Token name: " . token_name($token[0]) . " '{$token[1]}'\n";
 
-            foreach ($expressions as $expression) {
-                $expression->text[] = $token[1];
+            foreach ($expressions as $expr) {
+                $expr->text[] = $token[1];
             }
 
-            foreach ($functions as $function) {
-                $function->text[] = $token[1];
+            foreach ($functions as $func) {
+                $func->text[] = $token[1];
             }
 
             switch ($token[0]) {
