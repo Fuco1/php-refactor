@@ -123,6 +123,12 @@ class Parser {
         $this->expressions = [];
         $this->functions = [];
 
+        // 0 = foreach is not initialized
+        // 1 = T_FOREACH read
+        // 2 = ( read, next token begins an expression
+        // 3 = waiting for T_AS
+        $foreach = 0;
+
         foreach ($tokens as $token) {
             if (!is_array($token)) {
                 $token = [0, $token, 0];
@@ -130,6 +136,17 @@ class Parser {
 
             // $position = sprintf("% 4d", $this->position);
             // echo "($position) Token name: " . token_name($token[0]) . " '{$token[1]}'\n";
+            if ($foreach === 2) {
+                $expression = new ExpressionContext(
+                    $this->position, // +1 for the = character
+                    $parenDepth,
+                    $curlyDepth,
+                    $this->expressionId++
+                );
+                $expressions[] = $expression;
+                $this->expressions[$expression->id] = $expression;
+                $foreach++;
+            }
 
             foreach ($expressions as $expr) {
                 $expr->text[] = $token[1];
@@ -192,10 +209,23 @@ class Parser {
                         isset($expression) ? $expression :
                         (isset($function->arglist->opened) ? 0 : -1));
                     break;
+                case T_FOREACH:
+                    $foreach = 1;
+                    break;
+                case T_AS:
+                    if ($foreach === 3) {
+                        $expression = $this->closeExpression(
+                            $expression, $expressions,
+                            $parenDepth, $curlyDepth
+                        );
+                        $foreach = 0;
+                    }
+                    break;
             }
 
             switch ($token[1]) {
                 case '(':
+                    if ($foreach === 1) { $foreach++; }
                     if (!is_null($function)) {
                         if (is_null($function->arglist)) {
                             $function->arglist = new ArglistContext(

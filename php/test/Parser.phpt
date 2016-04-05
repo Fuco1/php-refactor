@@ -67,6 +67,18 @@ function foo($open, $close) {
         Assert::equal('1', trim($expressions[3]->string()));
     }
 
+    public function testForeachExpressions() {
+        $parser = new Parser('<?php
+foreach ($foo + "bar" as $baz) {
+    $a = $a + $baz;
+}
+$b = $a;
+');
+        $parser->parse();
+        $expressions = $parser->getExpressions();
+        Assert::equal('$foo + "bar"', $expressions[0]->string());
+        Assert::equal(' $a + $baz', $expressions[1]->string());
+        Assert::equal(' $a', $expressions[2]->string());
     }
 
     public function testVariableUsageAssignedExpression() {
