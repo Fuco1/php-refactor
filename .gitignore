@@ -1,3 +1,7 @@
 temp/*
 vendor/*
 .cask/*
+php/GPATH
+php/GRTAGS
+php/GTAGS
+php/test/output/*
