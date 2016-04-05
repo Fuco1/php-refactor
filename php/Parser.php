@@ -45,6 +45,16 @@ class Parser {
         return $this->expressions;
     }
 
+    public function getExpressionsAtPoint($point) {
+        $expressions = [];
+        foreach ($this->getExpressions() as $expression) {
+            if ($expression->beg() <= $point && $point < $expression->end()) {
+                $expressions[] = $expression;
+            }
+        }
+        return $expressions;
+    }
+
     public function getFunctions() {
         return $this->functions;
     }

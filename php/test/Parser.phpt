@@ -88,6 +88,35 @@ $b = $a;
         Assert::equal(1, $variables[1]['$a']->uses[0]->expression->id);
     }
 
+    public function testGetExpressionsAtPoint() {
+        $parser = new Parser($this->input2);
+        $parser->parse();
+        Assert::equal(' 1', $parser->getExpressionsAtPoint(12)[0]->string());
+        Assert::equal('
+function () {
+   $bar = "foo";
+   return $a;
+}', $parser->getExpressionsAtPoint(22)[0]->string());
+        Assert::equal('
+function () {
+   $bar = "foo";
+   return $a;
+}', $parser->getExpressionsAtPoint(48)[0]->string());
+        Assert::equal(' "foo"', $parser->getExpressionsAtPoint(48)[1]->string());
+    }
+
+    public function testGetExpressionsAtPointForeach() {
+        $parser = new Parser('<?php
+foreach ($foo + "bar" as $baz) {
+    $a = $a + $baz;
+}
+$b = $a;
+');
+        $parser->parse();
+        Assert::equal('$foo + "bar"', $parser->getExpressionsAtPoint(16)[0]->string());
+        Assert::equal('$foo + "bar"', $parser->getExpressionsAtPoint(27)[0]->string());
+    }
+
     public function testSimpleFunctions() {
         $parser = new Parser($this->input1);
         $parser->parse();
