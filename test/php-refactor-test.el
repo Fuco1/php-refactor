@@ -64,7 +64,7 @@ return foo(($b + 4) . 'asd');"))
 (ert-deftest php-refactor-test-inline-variable-multiple-assignment-first ()
   (php-refactor-test--inline-variable
    "<?php
-$a = 1;
+$a = 1  ;
 $b = $|a;
 $c = $a + $b;
 $a = 2;

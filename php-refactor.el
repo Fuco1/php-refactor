@@ -121,13 +121,18 @@ ARGS are arguments for the parser for the specified command."
            (-find (-lambda ((&alist 'beg beg 'assignedExpression expr))
                     (and (> beg current-beg) (consp expr)))
                   uses))
-          (text (s-trim (s-chop-suffix ";" (s-trim text)))))
+          (text (s-trim text)))
     (save-excursion
       (mapc (-lambda ((&alist 'beg beg))
               (goto-char beg)
               (cond
                ((= (point) inline-beg)
                 (delete-region inline-beg inline-expr-end)
+                ;; if there is only a semicolon left, get rid of it
+                (when (save-excursion
+                        (beginning-of-line)
+                        (looking-at "^\\s-*;$"))
+                  (delete-region (line-beginning-position) (line-end-position)))
                 (delete-blank-lines))
                ((and (> (point) inline-beg) (< (point) (or limit-beg (point-max))))
                 (delete-region (point) (+ beg len))
