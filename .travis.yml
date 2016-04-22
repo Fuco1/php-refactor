@@ -1,6 +1,9 @@
 language: php
 sudo: false
-cache: vendor
+cache:
+  directories:
+    - $HOME/vendor
+    - $HOME/.cask
 php:
   - '5.4'
   - '5.5'
