@@ -2,8 +2,8 @@ language: php
 sudo: false
 cache:
   directories:
-    - $HOME/vendor
-    - $HOME/.cask
+    - $TRAVIS_BUILD_DIR/vendor
+    - $TRAVIS_BUILD_DIR/.cask
 php:
   - '5.4'
   - '5.5'
