@@ -1,4 +1,6 @@
 language: php
+sudo: false
+cache: vendor
 php:
   - '5.4'
   - '5.5'
