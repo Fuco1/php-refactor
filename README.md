@@ -6,10 +6,19 @@ Refactoring library for php
 
 The easiest way now is to `git clone` this repo.  Marmalade and MELPA are planned in the future.
 
-This package depends on `dash` (emacs lisp library).  Get it from ELPA or https://github.com/magnars/dash.el.
+This package depends on `dash` (emacs lisp library).  Get it from ELPA or https://github.com/magnars/dash.el .
 
-This package depends on https://github.com/nikic/PHP-Parser.  You will need to download it somewhere on your machine as well.
+This package depends on `multiple-cursors` (emacs lisp library).  Get it from ELPA or https://github.com/magnars/multiple-cursors.el .
 
-Then, in this (php-refactor) package, edit the file `php/config.php` and specify
+This package depends on `f` (emacs lisp library).  Get it from ELPA or https://github.com/rejeep/f.el .
 
-* `PHP_PARSER_ROOT` - the path to the installation directory of `PHP-Parser`.
+This package depends on `shut-up` (emacs lisp library).  Get it from ELPA or https://github.com/cask/shut-up .
+
+To install php dependencies you will need [Composer](https://getcomposer.org/).  Once installed, run `composer install` in the repository to pull in the dependencies.
+
+In emacs, add `(require 'php-refactor)` somewhere in your config.
+
+# Available refactorings
+
+* php-refactor-inline-variable
+* php-refactor-rename-variable
