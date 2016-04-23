@@ -5,6 +5,7 @@
 
 (depends-on "f" "0.17.0")
 (depends-on "dash" "2.12.1")
+(depends-on "dash-functional" "2.0")
 (depends-on "multiple-cursors" "1.2.2")
 (depends-on "shut-up")
 

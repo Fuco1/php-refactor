@@ -31,6 +31,7 @@
 
 (require 'f)
 (require 'dash)
+(require 'dash-functional)
 (require 'multiple-cursors)
 (require 'shut-up)
 
@@ -68,6 +69,11 @@ ARGS are arguments for the parser for the specified command."
   "Get variable at POINT."
   (setq point (or point (point)))
   (php-refactor--run-parser "variable" (number-to-string point)))
+
+(defun php-refactor--get-expressions-at-point (&optional point)
+  "Get expressions at POINT."
+  (setq point (or point (point)))
+  (append (php-refactor--run-parser "expressions-at-point" (number-to-string point)) nil))
 
 (defun php-refactor--select-variable (variable)
   "Select all occurrences of VARIABLE in current function."
@@ -139,5 +145,21 @@ ARGS are arguments for the parser for the specified command."
                 (insert text))))
             (reverse uses)))))
 
+(defun php-refactor--select-expression ()
+  "Select an expression at `point'."
+  (interactive)
+  (-let* ((exprs (-sort (-on '> (lambda (x) (cdr (assoc 'beg x))))
+                        (php-refactor--get-expressions-at-point)))
+          (next-expr (if (use-region-p)
+                         (-first (-lambda ((&alist 'beg beg))
+                                   (< beg (point)))
+                                 exprs)
+                       (car exprs)))
+          ((&alist 'beg beg 'end end) next-expr))
+    (when next-expr
+      (goto-char beg)
+      (push-mark end)
+      (setq deactivate-mark nil)
+      (activate-mark))))
 (provide 'php-refactor)
 ;;; php-refactor.el ends here
