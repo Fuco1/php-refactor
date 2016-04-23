@@ -122,3 +122,41 @@ $c = function ($b) {
     return |'foo' + $b
 };
 return $a;"))
+
+(defun php-refactor-test--select-expression (initial expected)
+  "Test variable selection."
+  (php-refactor-test-with-php-buffer initial
+    (php-refactor--select-expression)
+    (insert "|")
+    (goto-char (mark))
+    (insert "M")
+    (should (equal (buffer-string) expected))))
+
+(ert-deftest php-refactor-select-expression ()
+  (php-refactor-test--select-expression
+   "<?php
+$foobar = $a + $b->['t|ext'];"
+   "<?php
+$foobar = |$a + $b->['text']M;"))
+
+(ert-deftest php-refactor-select-expression-nested ()
+  (php-refactor-test--select-expression
+   "<?php
+$f = function () {
+    $a = '|b';
+};"
+   "<?php
+$f = function () {
+    $a = |'b'M;
+};"))
+
+(ert-deftest php-refactor-select-expression-nested-repeated ()
+  (php-refactor-test--select-expression
+   "<?php
+$f = function () {
+    $a = |'b'M;
+};"
+   "<?php
+$f = |function () {
+    $a = 'b';
+}M;"))
