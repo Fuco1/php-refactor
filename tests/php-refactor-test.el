@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'php-refactor)
+(require 'php-mode)
 
 (defmacro php-refactor-test-with-temp-buffer (initial initform &rest forms)
   "Setup a new buffer, then run FORMS.
