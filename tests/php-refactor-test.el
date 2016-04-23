@@ -55,7 +55,7 @@ Finally, FORMS are run."
       (php-refactor-rename-variable)
       (execute-kbd-macro name)
       (insert "|")
-      (should (equal (buffer-string) expected))))
+      (expect (buffer-string) :to-equal expected)))
 
   (it "should rename variable"
     (php-refactor-test--rename-variable
@@ -100,7 +100,7 @@ return $foo;")))
     (php-refactor-test-with-php-buffer initial
       (php-refactor-inline-variable)
       (insert "|")
-      (should (equal (buffer-string) expected))))
+      (expect (buffer-string) :to-equal expected)))
 
   (it "should inline variable"
     (php-refactor-test--inline-variable
@@ -188,7 +188,7 @@ return $a;")))
        (insert "|")
        (goto-char (mark))
        (insert "M")
-       (should (equal (buffer-string) expected)))))
+       (expect (buffer-string) :to-equal expected))))
 
   (it "should select expression"
     (php-refactor-test--select-expression
@@ -227,7 +227,7 @@ $f = |function () {
       (php-refactor-extract-variable (region-beginning) (region-end))
       (execute-kbd-macro name)
       (insert "|")
-      (should (equal (buffer-string) expected))))
+      (expect (buffer-string) :to-equal expected)))
 
   (it "should extract variable"
     (php-refactor-test--extract-variable
