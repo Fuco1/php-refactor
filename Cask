@@ -11,5 +11,5 @@
 
 (development
   (depends-on "php-mode")
-  (depends-on "ert-runner")
+  (depends-on "buttercup")
   (depends-on "undercover"))
