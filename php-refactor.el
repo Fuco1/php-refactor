@@ -161,5 +161,23 @@ ARGS are arguments for the parser for the specified command."
       (push-mark end)
       (setq deactivate-mark nil)
       (activate-mark))))
+
+(defun php-refactor-extract-variable (beg end)
+  "Extract selected region into a local variable."
+  (interactive "r")
+  (let ((to-insert (delete-and-extract-region beg end)))
+    (insert "$")
+    (deactivate-mark)
+    (mc/create-fake-cursor-at-point)
+    (beginning-of-line)
+    ;; TODO: properly find possible extraction point
+    (open-line 1)
+    (insert " = " to-insert ";")
+    (beginning-of-line)
+    (insert "$")
+    (indent-according-to-mode)
+    (mc/maybe-multiple-cursors-mode)
+    (when multiple-cursors-mode (mc/cycle-forward))))
+
 (provide 'php-refactor)
 ;;; php-refactor.el ends here

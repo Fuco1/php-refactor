@@ -160,3 +160,46 @@ $f = function () {
 $f = |function () {
     $a = 'b';
 }M;"))
+
+(defun php-refactor-test--extract-variable (initial name expected)
+  "Test variable extraction."
+  (php-refactor-test-with-php-buffer initial
+    (php-refactor-extract-variable (region-beginning) (region-end))
+    (execute-kbd-macro name)
+    (insert "|")
+    (should (equal (buffer-string) expected))))
+
+(ert-deftest php-refactor-test-extract-variable ()
+  (php-refactor-test--extract-variable
+   "<?php
+$a = |'foo' . 'bar'M . 'baz';"
+   "foobar"
+   "<?php
+$foobar = 'foo' . 'bar';
+$a = $foobar| . 'baz';"))
+
+(ert-deftest php-refactor-test-extract-variable-test-indent ()
+  (php-refactor-test--extract-variable
+   "<?php
+function f() {
+    $a = |'foo' . 'bar'M . 'baz';
+}"
+   "foobar"
+   "<?php
+function f() {
+    $foobar = 'foo' . 'bar';
+    $a = $foobar| . 'baz';
+}"))
+
+(ert-deftest php-refactor-test-extract-variable-from-foreach ()
+  (php-refactor-test--extract-variable
+   "<?php
+foreach (|$a + $b->['text']M as $c) {
+    continue;
+}"
+   "foobar"
+   "<?php
+$foobar = $a + $b->['text'];
+foreach ($foobar| as $c) {
+    continue;
+}"))
