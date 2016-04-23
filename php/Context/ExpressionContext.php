@@ -2,6 +2,7 @@
 
 use JMS\Serializer\Annotation\VirtualProperty as VirtualProperty;
 use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose as Expose;
 
 /**
  * @ExclusionPolicy("all")
@@ -12,6 +13,8 @@ class ExpressionContext extends Context {
 
     public $parenDepth;
     public $curlyDepth;
+    /** @Expose */
+    public $whitespaceStart;
 
     public function __construct($position, $parenDepth, $curlyDepth, $id) {
         parent::__construct($position);

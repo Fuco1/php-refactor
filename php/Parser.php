@@ -326,6 +326,9 @@ class Parser {
                         break;
                     }
                 }
+                // also get rid of opening whitespace, but first save
+                // the original opening position
+                $expression->whitespaceStart = $expression->position;
                 $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
                 // TODO: abstract the following expressions dealing
                 // with "reseting" the top;
