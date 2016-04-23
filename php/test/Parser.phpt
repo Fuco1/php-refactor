@@ -48,7 +48,7 @@ function foo($open, $close) {
         $parser = new Parser($this->input1);
         $parser->parse();
         $expressions = $parser->getExpressions();
-        Assert::equal(' 2', $expressions[0]->string());
+        Assert::equal('2', $expressions[0]->string());
         Assert::equal('$foo + \'bar\'', trim($expressions[1]->string()));
         Assert::equal('foo(\'foo\')', trim($expressions[2]->string()));
         Assert::equal('foo($foo)', trim($expressions[3]->string()));
@@ -77,8 +77,8 @@ $b = $a;
         $parser->parse();
         $expressions = $parser->getExpressions();
         Assert::equal('$foo + "bar"', $expressions[0]->string());
-        Assert::equal(' $a + $baz', $expressions[1]->string());
-        Assert::equal(' $a', $expressions[2]->string());
+        Assert::equal('$a + $baz', $expressions[1]->string());
+        Assert::equal('$a', $expressions[2]->string());
     }
 
     public function testVariableUsageAssignedExpression() {
@@ -91,18 +91,18 @@ $b = $a;
     public function testGetExpressionsAtPoint() {
         $parser = new Parser($this->input2);
         $parser->parse();
-        Assert::equal(' 1', $parser->getExpressionsAtPoint(12)[0]->string());
-        Assert::equal('
-function () {
+        Assert::equal('1', $parser->getExpressionsAtPoint(12)[0]->string());
+        Assert::equal('function () {
    $bar = "foo";
    return $a;
 }', $parser->getExpressionsAtPoint(22)[0]->string());
-        Assert::equal('
-function () {
+        Assert::equal('function () {
    $bar = "foo";
    return $a;
 }', $parser->getExpressionsAtPoint(48)[0]->string());
-        Assert::equal(' "foo"', $parser->getExpressionsAtPoint(48)[1]->string());
+        Assert::equal('"foo"', $parser->getExpressionsAtPoint(48)[1]->string());
+        Assert::equal('"foo"', $parser->getExpressionsAtPoint(46)[1]->string());
+        Assert::equal('"foo"', $parser->getExpressionsAtPoint(50)[1]->string());
     }
 
     public function testGetExpressionsAtPointForeach() {

@@ -329,6 +329,14 @@ class Parser {
                 // also get rid of opening whitespace, but first save
                 // the original opening position
                 $expression->whitespaceStart = $expression->position;
+                foreach ($expression->text as $k => $text) {
+                    if (trim($text) === '') {
+                        unset($expression->text[$k]);
+                        $expression->position += mb_strlen($text, 'UTF-8');
+                    } else {
+                        break;
+                    }
+                }
                 $this->debug("Expression ({$expression->position}-{$this->position}): " . $expression->string() . PHP_EOL);
                 // TODO: abstract the following expressions dealing
                 // with "reseting" the top;
