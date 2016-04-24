@@ -294,6 +294,7 @@ class Parser {
                         $lastUsage = end($values);
                         $lastUsage->assignedExpression = $expression;
                     }
+                    $expression->variable = $variable;
                     break;
                 case ';':
                     $expression = $this->closeExpression(

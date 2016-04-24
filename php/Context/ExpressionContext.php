@@ -15,6 +15,8 @@ class ExpressionContext extends Context {
     public $curlyDepth;
     /** @Expose */
     public $whitespaceStart;
+    /** @Expose */
+    public $variable = null;
 
     public function __construct($position, $parenDepth, $curlyDepth, $id) {
         parent::__construct($position);
