@@ -10,8 +10,8 @@
     ],
     "require": {
         "ext-mbstring": "*",
-        "nette/robot-loader": "2.3.*",
-        "nette/caching": "2.4.*",
+        "nette/robot-loader": "^2.4",
+        "nette/caching": "^2.4",
         "jms/serializer": "1.1.*"
     },
     "require-dev": {
